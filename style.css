@@ -1,0 +1,30 @@
+body {
+    background: #333333;
+    text-align: center;
+    margin: 0;
+}
+
+div {
+    overflow: hidden;
+}
+
+img {
+    display: none;
+}
+
+canvas {
+    background: #000;
+}
+
+.default {
+    cursor: default;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+@font-face {
+    font-family: "manaspace";
+    src: url("manaspace.ttf");
+}
