@@ -181,6 +181,16 @@ let pressOptions = {
 
 hammertime.get('press').set(pressOptions);
 
+hammertime.on('touchstart', function(ev) {
+    alert("touchstart");
+    mouse.down = true;
+});
+
+hammertime.on('touchend', function(ev) {
+    alert("touchend");
+    mouse.down = false;
+});
+
 hammertime.on('press', function(ev) {
     mouse.down = true;
 });
@@ -188,7 +198,7 @@ hammertime.on('press', function(ev) {
 hammertime.on('pressup', function(ev) {
     mouse.down = false;
 });
-//
+
 // body.touchstart(function(e) {
 //     handleMouse(e);
 //     mouse.down = true;
