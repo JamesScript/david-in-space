@@ -188,16 +188,16 @@ hammertime.on('press', function(ev) {
 hammertime.on('pressup', function(ev) {
     mouse.down = false;
 });
-
-body.touchstart(function(e) {
-    handleMouse(e);
-    mouse.down = true;
-});
-
-body.touchend(function(e) {
-    handleMouse(e)
-    mouse.down = false;
-});
+//
+// body.touchstart(function(e) {
+//     handleMouse(e);
+//     mouse.down = true;
+// });
+//
+// body.touchend(function(e) {
+//     handleMouse(e)
+//     mouse.down = false;
+// });
 
 body.mousemove(function(e) {
     handleMouse(e)
