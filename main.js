@@ -235,6 +235,10 @@ document.body.addEventListener("touchstart", () => {
     mouse.down = true;
 }, false);
 
+document.body.addEventListener("touchend", () => {
+    mouse.down = false;
+}, false);
+
 // body.mousedown(function(e) {
 //     console.log("mousedown");
 //     handleMouse(e);
