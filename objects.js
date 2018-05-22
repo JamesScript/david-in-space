@@ -60,7 +60,7 @@ function Player() {
             this.canShoot = false;
             setTimeout(() => {
                 this.canShoot = true;
-            }, 50);
+            }, 30);
         }
         this.contain();
     };
