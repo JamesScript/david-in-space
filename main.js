@@ -175,15 +175,15 @@ let pressOptions = {
 
 hammertime.get('press').set(pressOptions);
 
-// hammertime.on('touchstart', function(ev) {
-//     alert("touchstart");
-//     mouse.down = true;
-// });
-//
-// hammertime.on('touchend', function(ev) {
-//     alert("touchend");
-//     mouse.down = false;
-// });
+hammertime.on('touchstart', function(ev) {
+
+    mouse.down = true;
+});
+
+hammertime.on('touchend', function(ev) {
+
+    mouse.down = false;
+});
 //
 // hammertime.on('press', function(ev) {
 //     alert("press");
