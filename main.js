@@ -209,12 +209,12 @@ hammertime.get('press').set(pressOptions);
 //     handleMouse(e)
 // });
 
-hammertime.on('pan', function(ev) {
-    mouse.x = ev.srcEvent.pageX - gc.offset().left;
-    mouse.y = ev.srcEvent.pageY - gc.offset().top;
-    if (p1.x < 0) p1.x = 0;
-    if (p1.x > width) p1.x = width;
-});
+// hammertime.on('pan', function(ev) {
+//     mouse.x = ev.srcEvent.pageX - gc.offset().left;
+//     mouse.y = ev.srcEvent.pageY - gc.offset().top;
+//     if (p1.x < 0) p1.x = 0;
+//     if (p1.x > width) p1.x = width;
+// });
 
 document.body.addEventListener("click", () => {
     p1.shoot();
