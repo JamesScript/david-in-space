@@ -166,12 +166,6 @@ function arsenal() {
     ctx.fillText(p1.uziAmmo, uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2);
 }
 
-hammertime.on('pan', function(ev) {
-    mouse.x = ev.srcEvent.pageX - gc.offset().left;
-    if (p1.x < 0) p1.x = 0;
-    if (p1.x > width) p1.x = width;
-});
-
 let pressOptions = {
     // event: 'press',
     // pointer: 1,
@@ -215,6 +209,13 @@ hammertime.get('press').set(pressOptions);
 //     handleMouse(e)
 // });
 
+hammertime.on('pan', function(ev) {
+    mouse.x = ev.srcEvent.pageX - gc.offset().left;
+    mouse.y = ev.srcEvent.pageY - gc.offset().top;
+    if (p1.x < 0) p1.x = 0;
+    if (p1.x > width) p1.x = width;
+});
+
 document.body.addEventListener("click", () => {
     p1.shoot();
 }, false);
@@ -225,6 +226,7 @@ document.body.addEventListener("mousemove", (e) => {
 
 document.body.addEventListener("mousedown", () => {
     mouse.down = true;
+    console.log("mousedown");
 }, false);
 
 document.body.addEventListener("mouseup", () => {
@@ -233,10 +235,12 @@ document.body.addEventListener("mouseup", () => {
 
 document.body.addEventListener("touchstart", () => {
     mouse.down = true;
+    console.log("touchstart");
 }, false);
 
 document.body.addEventListener("touchend", () => {
     mouse.down = false;
+    console.log("touchend");
 }, false);
 
 // body.mousedown(function(e) {
