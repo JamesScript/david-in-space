@@ -166,13 +166,13 @@ function arsenal() {
     ctx.fillText(p1.uziAmmo, uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2);
 }
 
-// let pressOptions = {
-//     // event: 'press',
-//     // pointer: 1,
-//     threshold: 1,
-//     time: 1
-// };
-//
+let pressOptions = {
+    // event: 'press',
+    // pointer: 1,
+    threshold: 1,
+    time: 1
+};
+
 hammertime.get('press').set(pressOptions);
 
 // hammertime.on('touchstart', function(ev) {
