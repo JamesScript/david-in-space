@@ -175,15 +175,14 @@ let pressOptions = {
 
 hammertime.get('press').set(pressOptions);
 
-hammertime.on('touchstart', function(ev) {
-
-    mouse.down = true;
-});
-
-hammertime.on('touchend', function(ev) {
-
-    mouse.down = false;
-});
+// hammertime.on('touchstart', function(ev) {
+//     mouse.down = true;
+// });
+//
+// hammertime.on('touchend', function(ev) {
+//
+//     mouse.down = false;
+// });
 //
 // hammertime.on('press', function(ev) {
 //     alert("press");
@@ -209,12 +208,12 @@ hammertime.on('touchend', function(ev) {
 //     handleMouse(e)
 // });
 
-// hammertime.on('pan', function(ev) {
-//     mouse.x = ev.srcEvent.pageX - gc.offset().left;
-//     mouse.y = ev.srcEvent.pageY - gc.offset().top;
-//     if (p1.x < 0) p1.x = 0;
-//     if (p1.x > width) p1.x = width;
-// });
+hammertime.on('pan', function(ev) {
+    mouse.x = ev.srcEvent.pageX - gc.offset().left;
+    mouse.y = ev.srcEvent.pageY - gc.offset().top;
+    if (p1.x < 0) p1.x = 0;
+    if (p1.x > width) p1.x = width;
+});
 
 document.body.addEventListener("click", () => {
     p1.shoot();
