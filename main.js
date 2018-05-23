@@ -38,7 +38,7 @@ let img = {
     shop: get("shop")
 };
 let aud = new Sound("audioSpriteTest.mp3");
-// let hammertime = new Hammer(c);
+let hammertime = new Hammer(c);
 let isMobile = checkIfMobile();
 
 function init() {
@@ -165,15 +165,56 @@ function arsenal() {
     ctx.fillStyle = "#FF4444";
     ctx.fillText(p1.uziAmmo, uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2);
 }
-//
+
 // let pressOptions = {
 //     // event: 'press',
 //     // pointer: 1,
 //     threshold: 1,
 //     time: 1
 // };
+//
+hammertime.get('press').set(pressOptions);
 
-// hammertime.get('press').set(pressOptions);
+// hammertime.on('touchstart', function(ev) {
+//     alert("touchstart");
+//     mouse.down = true;
+// });
+//
+// hammertime.on('touchend', function(ev) {
+//     alert("touchend");
+//     mouse.down = false;
+// });
+//
+// hammertime.on('press', function(ev) {
+//     alert("press");
+//     mouse.down = true;
+// });
+//
+// hammertime.on('pressup', function(ev) {
+//     alert("pressup");
+//     mouse.down = false;
+// });
+
+// body.touchstart(function(e) {
+//     handleMouse(e);
+//     mouse.down = true;
+// });
+//
+// body.touchend(function(e) {
+//     handleMouse(e)
+//     mouse.down = false;
+// });
+
+// body.mousemove(function(e) {
+//     handleMouse(e)
+// });
+
+// hammertime.on('pan', function(ev) {
+//     mouse.x = ev.srcEvent.pageX - gc.offset().left;
+//     mouse.y = ev.srcEvent.pageY - gc.offset().top;
+//     if (p1.x < 0) p1.x = 0;
+//     if (p1.x > width) p1.x = width;
+// });
 
 document.body.addEventListener("click", () => {
     p1.shoot();
@@ -201,6 +242,18 @@ document.body.addEventListener("touchend", () => {
     mouse.down = false;
     console.log("touchend");
 }, false);
+
+// body.mousedown(function(e) {
+//     console.log("mousedown");
+//     handleMouse(e);
+//     mouse.down = true;
+//     click();
+// });
+//
+// body.mouseup(function() {
+//     console.log("mouseup");
+//     mouse.down = false;
+// });
 
 init();
 render();
