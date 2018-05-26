@@ -4,17 +4,18 @@ function Player() {
     this.w = width * 0.12;
     this.h = height * 0.065;
     this.hp = 100;
+    this.barrier = 1;
     this.maxHp = 100;
     this.equip = 0;
     this.canShoot = true;
-    this.speed = 20;
+    this.speed = width * 0.0486;
     this.xTarget = 300;
     this.yTarget = 300;
     this.score = 0;
     this.totalSpent = 0; // used to calculate total score
     this.dead = false;
     this.isCross = false;
-    this.uziAmmo = 1000;
+    this.uziAmmo = 200;
     this.show = () => {
         if (this.hp > 0) {
             let sprite = this.isCross ? img.dc : img.dj;
@@ -61,7 +62,16 @@ function Player() {
             this.canShoot = false;
             setTimeout(() => {
                 this.canShoot = true;
-            }, 30);
+            }, 60);
+        }
+        if (this.barrier > 0) {
+            ctx.strokeStyle = "#0000FF";
+            ctx.lineWidth = Math.sin(count.levelFrame / 10) * 3 + 4;
+            for (let i = 0; i < this.barrier; i++) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, width * 0.07 + (i+1) * width * 0.01, 0, 2*Math.PI);
+                ctx.stroke();
+            }
         }
         this.contain();
     };
@@ -91,6 +101,13 @@ function Player() {
         if (this.y > height) this.y = height;
         if (this.hp > this.maxHp) {
             this.hp = this.maxHp;
+        }
+    };
+    this.damage = (amount) => {
+        if (this.barrier <= 0) {
+            this.hp -= amount;
+        } else {
+            this.barrier--;
         }
     };
     this.death = () => {

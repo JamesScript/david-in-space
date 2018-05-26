@@ -38,7 +38,7 @@ function Enemy(x, y) {
             }
         }
         if (collision(this, p1)) {
-            p1.hp -= 10;
+            p1.damage(10);
             booms.push(new Boom(this.x, this.y));
             this.expended = true;
         }
@@ -78,7 +78,7 @@ function GreenAlien(x, y) {
             }
         }
         if (collision(this, p1)) {
-            p1.hp -= 20;
+            p1.damage(20);
             booms.push(new Boom(this.x, this.y));
             this.expended = true;
         }
@@ -136,7 +136,7 @@ function SkullAlien(x, y) {
         this.expended = this.y > height + this.h;
         if (collision(this, p1)) {
             this.expended = true;
-            p1.hp -= 15;
+            p1.damage(15);
             booms.push(new Boom(this.x, this.y));
         }
         for (let i = 0; i < bullets.length; i++) {
@@ -186,7 +186,7 @@ function ToothAlien(x, y) {
             }
         }
         if (collision(this, p1)) {
-            p1.hp -= 15;
+            p1.damage(15);
             booms.push(new Boom(this.x, this.y));
             this.expended = true;
         }
@@ -239,7 +239,7 @@ function Meteorite(x, y, speed) {
         if (collision(this, p1)) {
             this.expended = true;
             booms.push(new Boom(this.x, this.y));
-            p1.hp -= 30;
+            p1.damage(30);
         }
     };
 }
@@ -305,7 +305,7 @@ function BossSpawn(x, y) {
             }
         }
         if (collision(this, p1)) {
-            p1.hp -= 10;
+            p1.damage(10);
             booms.push(new Boom(this.x, this.y));
             this.expended = true;
         }

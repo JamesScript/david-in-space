@@ -48,6 +48,7 @@ function init() {
     ctx.canvas.width = width;
     ctx.canvas.height = height;
     ctx.imageSmoothingEnabled = false;
+    ctx.font = "20px manaspace";
     for (let i = 0; i < 20; i++) {
         stars[i] = new Star(Math.random() * width, Math.random() * height, Math.random() * 5 + 1);
     }

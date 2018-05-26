@@ -37,6 +37,7 @@ function CountRegister() {
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign="center";
             ctx.fillText("GAME OVER", width / 2, height / 2);
+            ctx.fillText("TOTAL SCORE: " + (p1.score + p1.totalSpent), width / 2, height * 0.6);
             if (!this.gameOver) {
                 setTimeout(() => {
                     this.currentLevel = 0;

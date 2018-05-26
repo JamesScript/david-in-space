@@ -53,6 +53,7 @@ function ShopItem(name) {
                     shop.insufficientFunds = true;
                 } else {
                     p1.score -= this.cost();
+                    p1.totalSpent += this.cost();
                     shop.purchaseSpamTimeOutSet = true;
                     this.purchase();
                     this.expended = true;
