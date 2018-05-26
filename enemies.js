@@ -49,7 +49,7 @@ function GreenAlien(x, y) {
     this.x = x;
     this.y = y;
     this.w = width * 0.24;
-    this.h = 50;
+    this.h = height * 0.072;
     this.yVel = 1;
     this.stage = "enter";
     this.patrolFrame = 0;
@@ -123,7 +123,7 @@ function SkullAlien(x, y) {
     this.y = y;
     this.w = width * 0.09;
     this.h = height * 0.072;
-    this.yVel = 10;
+    this.yVel = height * 0.00723;
     this.hp = 3;
     this.expended = false;
     this.show = () => {
@@ -132,7 +132,7 @@ function SkullAlien(x, y) {
     this.update = () => {
         this.y += this.yVel;
         this.yVel *= 0.95;
-        if (this.yVel < 1) this.yVel = 5;
+        if (this.yVel < height * 0.0014) this.yVel = height * 0.00723;
         this.expended = this.y > height + this.h;
         if (collision(this, p1)) {
             this.expended = true;
@@ -162,7 +162,7 @@ function ToothAlien(x, y) {
     this.y = y;
     this.w = width * 0.146;
     this.h = height * 0.086;
-    this.xVel = 10;
+    this.xVel = height * 0.0145;
     this.hp = 3;
     this.expended = false;
     this.show = () => {
@@ -288,7 +288,7 @@ function BossSpawn(x, y) {
         ctx.drawImage(img.bossSpawn, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     };
     this.update = () => {
-        this.y += 5;
+        this.y += 0.0072;
         if (this.y > height) {
             this.expended = true;
         }
