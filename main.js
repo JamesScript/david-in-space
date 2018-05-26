@@ -55,7 +55,7 @@ function init() {
     shop.stock.push(new ShopItem("potion"));
     shop.stock.push(new ShopItem("firstAid"));
     if (isMobile && window.innerWidth > window.innerHeight) {
-        alert("If you are using mobile it is strongly recommended you switch to portrait view and reload this page.");
+        alert("If you are using mobile please switch to portrait view and reload this page.");
     }
 }
 
@@ -72,23 +72,23 @@ function menu() {
         x: width * 0.5,
         y: height * 0.45,
         w: width * 0.4,
-        h: width * 0.4,
+        h: height * 0.238,
         selected: false
     };
     let djBlock = {
         x: width * 0.5,
         y: height * 0.75,
         w: width * 0.4,
-        h: width * 0.4,
+        h: height * 0.238,
         selected: false
     };
     dcBlock.selected = collision(mouse, dcBlock);
     djBlock.selected = collision(mouse, djBlock);
     dcBlock.selected || djBlock.selected ? cursor("pointer") : cursor("default");
     ctx.fillStyle = dcBlock.selected ? "#58ff3e" : "#818084";
-    ctx.fillRect(dcBlock.x - dcBlock.w / 2, dcBlock.y - dcBlock.w / 2, dcBlock.w, dcBlock.h);
+    ctx.fillRect(dcBlock.x - dcBlock.w / 2, dcBlock.y - dcBlock.h / 2, dcBlock.w, dcBlock.h);
     ctx.fillStyle = djBlock.selected ? "#58ff3e" : "#818084";
-    ctx.fillRect(djBlock.x - djBlock.w / 2, djBlock.y  - djBlock.w / 2, djBlock.w, djBlock.h);
+    ctx.fillRect(djBlock.x - djBlock.w / 2, djBlock.y  - djBlock.h / 2, djBlock.w, djBlock.h);
     ctx.fillStyle = "#ffe827";
     ctx.font = "30px manaspace";
     ctx.textAlign = "center";

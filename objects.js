@@ -95,7 +95,7 @@ function Player() {
     };
     this.death = () => {
         if (!this.dead) {
-            count.currentLevel = 10;
+            count.currentLevel = 99;
             booms.push(new Boom(this.x, this.y));
             this.dead = true;
         }
@@ -105,9 +105,9 @@ function Player() {
 function Bullet(x) {
     this.x = x;
     this.y = p1.y;
-    this.w = 5;
-    this.h = 15;
-    this.speed = 10;
+    this.w = width * 0.0121;
+    this.h = height * 0.0217;
+    this.speed = height * 0.0145;
     this.expended = false;
     this.show = () => {
         ctx.fillStyle = "#0000FF";

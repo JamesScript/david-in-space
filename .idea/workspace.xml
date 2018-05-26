@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0e76fc76-4ad0-4827-a6ad-f0cd160fb85f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/enemies.js" afterPath="$PROJECT_DIR$/enemies.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/countAndSpawn.js" afterPath="$PROJECT_DIR$/countAndSpawn.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.js" afterPath="$PROJECT_DIR$/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/objects.js" afterPath="$PROJECT_DIR$/objects.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,21 +20,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+            <state relative-caret-position="-102">
+              <caret line="89" column="61" lean-forward="true" selection-start-line="89" selection-start-column="61" selection-end-line="89" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="objects.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="objects.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/objects.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2362">
-              <caret line="29" column="36" lean-forward="true" selection-start-line="29" selection-start-column="36" selection-end-line="29" selection-end-column="36" />
+            <state relative-caret-position="2655">
+              <caret line="177" column="17" lean-forward="true" selection-start-line="177" selection-start-column="17" selection-end-line="177" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -51,8 +53,8 @@
       <file leaf-file-name="countAndSpawn.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/countAndSpawn.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="705">
-              <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="13" />
+            <state relative-caret-position="298">
+              <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -102,10 +104,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/utility.js" />
-        <option value="$PROJECT_DIR$/objects.js" />
-        <option value="$PROJECT_DIR$/countAndSpawn.js" />
         <option value="$PROJECT_DIR$/enemies.js" />
         <option value="$PROJECT_DIR$/main.js" />
+        <option value="$PROJECT_DIR$/countAndSpawn.js" />
+        <option value="$PROJECT_DIR$/objects.js" />
       </list>
     </option>
   </component>
@@ -265,12 +267,12 @@
       <workItem from="1527013293614" duration="3700000" />
       <workItem from="1527021619867" duration="842000" />
       <workItem from="1527098352819" duration="3837000" />
-      <workItem from="1527346695642" duration="3747000" />
+      <workItem from="1527346695642" duration="4687000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12126000" />
+    <option name="totallyTimeSpent" value="13066000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="834" extended-state="6" />
@@ -433,22 +435,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/countAndSpawn.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/objects.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2362">
-          <caret line="29" column="36" lean-forward="true" selection-start-line="29" selection-start-column="36" selection-end-line="29" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/enemies.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="458">
@@ -457,10 +443,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/countAndSpawn.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+        <state relative-caret-position="-102">
+          <caret line="89" column="61" lean-forward="true" selection-start-line="89" selection-start-column="61" selection-end-line="89" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objects.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2655">
+          <caret line="177" column="17" lean-forward="true" selection-start-line="177" selection-start-column="17" selection-end-line="177" selection-end-column="17" />
           <folding />
         </state>
       </provider>

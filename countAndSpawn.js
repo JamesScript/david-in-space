@@ -33,7 +33,7 @@ function CountRegister() {
         }
     };
     this.level = {
-        10: () => {
+        99: () => {
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign="center";
             ctx.fillText("GAME OVER", width / 2, height / 2);
