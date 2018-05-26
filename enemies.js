@@ -1,8 +1,8 @@
 function Enemy(x, y) {
     this.x = x;
     this.y = y;
-    this.w = 50;
-    this.h = 50;
+    this.w = width * 0.12;
+    this.h = height * 0.072;
     this.xVel = 5;
     this.yVel = 5;
     this.maxVel = 10;
@@ -48,7 +48,7 @@ function Enemy(x, y) {
 function GreenAlien(x, y) {
     this.x = x;
     this.y = y;
-    this.w = 100;
+    this.w = width * 0.24;
     this.h = 50;
     this.yVel = 1;
     this.stage = "enter";
@@ -121,8 +121,8 @@ function GreenAlien(x, y) {
 function SkullAlien(x, y) {
     this.x = x;
     this.y = y;
-    this.w = 40;
-    this.h = 50;
+    this.w = width * 0.09;
+    this.h = height * 0.072;
     this.yVel = 10;
     this.hp = 3;
     this.expended = false;
@@ -160,8 +160,8 @@ function SkullAlien(x, y) {
 function ToothAlien(x, y) {
     this.x = x;
     this.y = y;
-    this.w = 60;
-    this.h = 60;
+    this.w = width * 0.146;
+    this.h = height * 0.086;
     this.xVel = 10;
     this.hp = 3;
     this.expended = false;
@@ -206,8 +206,8 @@ function ToothAlien(x, y) {
 function Meteorite(x, y, speed) {
     this.x = x;
     this.y = y;
-    this.w = 50;
-    this.h = 50;
+    this.w = width * 0.12;
+    this.h = height * 0.072;
     this.speed = speed;
     this.hp = 10;
     this.rot = 0;
@@ -247,8 +247,8 @@ function Meteorite(x, y, speed) {
 function Boss(x, y) {
     this.x = x;
     this.y = y;
-    this.w = 150;
-    this.h = 120;
+    this.w = width * 0.36;
+    this.h = height * 0.173;
     this.hp = 100;
     this.expended = false;
     this.stage = "enter";
@@ -281,8 +281,8 @@ function Boss(x, y) {
 function BossSpawn(x, y) {
     this.x = x;
     this.y = y;
-    this.w = 30;
-    this.h = 50;
+    this.w = width * 0.073;
+    this.h = height * 0.072;
     this.expended = false;
     this.show = () => {
         ctx.drawImage(img.bossSpawn, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);

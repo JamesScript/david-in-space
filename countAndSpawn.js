@@ -15,7 +15,6 @@ function CountRegister() {
     this.meteoriteTimeoutSet = false;
     this.bossSpawned = false;
     this.gameOver = false;
-    this.landscapeAlerted = false;
     this.createLevelLengthsArray = () => {
         for (let i = 0; i < this.levelLengthsInReality.length; i++) {
             this.levelLengths.push(1);
@@ -41,9 +40,6 @@ function CountRegister() {
             if (!this.gameOver) {
                 setTimeout(() => {
                     this.currentLevel = 0;
-                    // p1.hp = 100;
-                    // p1.score = 0;
-                    // p1.dead = false;
                     p1 = new Player();
                     enemies = [];
                     this.gameOver = false;

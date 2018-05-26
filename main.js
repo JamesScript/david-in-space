@@ -1,3 +1,7 @@
+const get = id => document.getElementById(id);
+const c = get("gameCanvas");
+const gc = $('#gameCanvas');
+const body = $('body');
 let p1 = new Player();
 let count = new CountRegister();
 let shop = new Shop();
@@ -13,10 +17,6 @@ let mouse = {
     h: 1,
     down: false
 };
-let get = id => document.getElementById(id);
-let c = get("gameCanvas");
-let gc = $('#gameCanvas');
-let body = $('body');
 let ctx;
 let img = {
     dc: get("cross"),
@@ -54,14 +54,13 @@ function init() {
     enemies[0] = new Enemy(width / 2, 0);
     shop.stock.push(new ShopItem("potion"));
     shop.stock.push(new ShopItem("firstAid"));
+    if (isMobile && window.innerWidth > window.innerHeight) {
+        alert("If you are using mobile it is strongly recommended you switch to portrait view and reload this page.");
+    }
 }
 
 function render() {
     cursor("default"); // gets overriden, placed to avoid - carry-over glitches
-    if (isMobile && window.innerWidth > window.innerHeight && !count.landscapeAlerted) {
-        alert("If you are using mobile it is strongly recommended you switch to portrait view and reload this page.");
-        count.landscapeAlerted = true;
-    }
     ctx.fillStyle = "#000000";
     ctx.fillRect(0,0,width,height);
     count.currentLevel === 0 ? menu() : gameScript();
@@ -122,7 +121,7 @@ function gameScript() {
 function display() {
     ctx.globalAlpha = 0.5;
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, height - p1.h, width, p1.h);
+    ctx.fillRect(0, height * 0.915, width, height * 0.085);
     ctx.globalAlpha = 1;
     ctx.fillStyle = "#000000";
     ctx.font = "18px manaspace";
@@ -145,14 +144,14 @@ function arsenal() {
     let pistolCoords = {
         x: width * 0.59,
         y: height * 0.96,
-        w: 50,
-        h: 45
+        w: width * 0.12,
+        h: height * 0.065
     };
     let uziCoords = {
         x: width * 0.72,
         y: height * 0.96,
-        w: 50,
-        h: 45
+        w: width * 0.12,
+        h: height * 0.065
     };
     p1.equip === 0 ? ctx.fillStyle = "#FFFF00" : ctx.fillStyle = "#999999";
     ctx.fillRect(pistolCoords.x - pistolCoords.w / 2, pistolCoords.y - pistolCoords.h / 2, pistolCoords.w, pistolCoords.h);

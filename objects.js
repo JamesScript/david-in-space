@@ -1,8 +1,8 @@
 function Player() {
     this.x = 300;
     this.y = 800;
-    this.w = 50;
-    this.h = 50;
+    this.w = width * 0.12;
+    this.h = height * 0.065;
     this.hp = 100;
     this.maxHp = 100;
     this.equip = 0;
@@ -11,6 +11,7 @@ function Player() {
     this.xTarget = 300;
     this.yTarget = 300;
     this.score = 0;
+    this.totalSpent = 0; // used to calculate total score
     this.dead = false;
     this.isCross = false;
     this.uziAmmo = 1000;
@@ -98,7 +99,7 @@ function Player() {
             booms.push(new Boom(this.x, this.y));
             this.dead = true;
         }
-    }
+    };
 }
 
 function Bullet(x) {
