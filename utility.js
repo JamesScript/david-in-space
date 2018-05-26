@@ -1,5 +1,5 @@
-let width = window.innerWidth > window.innerHeight ? 411 : window.innerWidth - 10;
-let height = window.innerHeight - 10;
+let width = window.innerWidth > window.innerHeight ? 411 : window.innerWidth;
+let height = window.innerHeight;
 
 function collision(a, b) {
     if (p1.hp <= 0 && a !== mouse && b !== mouse) {
