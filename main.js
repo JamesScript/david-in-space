@@ -58,6 +58,10 @@ function init() {
 
 function render() {
     cursor("default"); // gets overriden, placed to avoid - carry-over glitches
+    if (isMobile && window.innerWidth > window.innerHeight && !count.landscapeAlerted) {
+        alert("If you are using mobile it is strongly recommended you switch to portrait view and reload this page.");
+        count.landscapeAlerted = true;
+    }
     ctx.fillStyle = "#000000";
     ctx.fillRect(0,0,width,height);
     count.currentLevel === 0 ? menu() : gameScript();
@@ -167,7 +171,7 @@ function arsenal() {
 }
 
 let pressOptions = {
-    // event: 'press',
+    event: 'press',
     // pointer: 1,
     threshold: 1,
     time: 1
@@ -232,7 +236,7 @@ document.body.addEventListener("mouseup", () => {
     mouse.down = false;
 }, false);
 
-document.body.addEventListener("touchstart", () => {
+document.body.addEventListener("touchstart", (e) => {
     mouse.down = true;
     console.log("touchstart");
 }, false);
