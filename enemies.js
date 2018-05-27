@@ -193,13 +193,6 @@ function ToothAlien(x, y) {
         if (this.y > height + this.h) {
             this.expended = true;
         }
-        // this.x += this.xVel;
-        // if (this.x + this.xVel > p1.x) {
-        //     this.xVel = -10;
-        // }
-        // if (this.x + this.xVel < p1.x) {
-        //     this.xVel = 10;
-        // }
     };
 }
 
@@ -249,25 +242,52 @@ function Boss(x, y) {
     this.y = y;
     this.w = width * 0.36;
     this.h = height * 0.173;
-    this.hp = 100;
+    this.hp = 120;
+    this.patrolFrame = 0;
     this.expended = false;
     this.stage = "enter";
     this.fireTimeoutSet = false;
+    this.hitTimeoutSet = false;
     this.show = () => {
         ctx.drawImage(img.boss, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     };
     this.update = () => {
         this[this.stage]();
+        if (collision(this, p1) && !this.hitTimeoutSet) {
+            p1.damage(20);
+            setTimeout(() => {
+                this.hitTimeoutSet = false;
+            }, 1000);
+            this.hitTimeoutSet = true;
+        }
+        for (let i = 0; i < bullets.length; i++) {
+            if (collision(this, bullets[i])) {
+                bullets[i].expended = true;
+                aud.clone(2);
+                this.hp--;
+                if (this.hp <= 0) {
+                    booms.push(new Boom(this.x, this.y));
+                    this.expended = true;
+                    for (let j = 0; j < 15; j++) {
+                        let rndX = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
+                        let rndY = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
+                        setTimeout(() => {
+                            booms.push(new Boom(this.x + rndX, this.y + rndY));
+                        }, Math.floor(Math.random() * 1000));
+                    }
+                }
+            }
+        }
     };
     this.enter = () => {
-        this.y++;
+        this.y += height * 0.01;
         if (this.y > height * 0.2) {
             this.stage = "firing";
         }
     };
     this.firing = () => {
         if (!this.fireTimeoutSet) {
-            let rndTime = Math.floor(Math.random() * 100) + 50;
+            let rndTime = Math.floor(Math.random() * 400) + 200;
             let rndPos = Math.floor(Math.random() * 100) - 50;
             setTimeout(() => {
                 enemies.push(new BossSpawn(this.x + rndPos, this.y));
@@ -275,7 +295,30 @@ function Boss(x, y) {
             }, rndTime);
             this.fireTimeoutSet = true;
         }
-    }
+        if (this.patrolFrame < 40) {
+            this.x = Math.sin(this.patrolFrame) * width / 3 + width / 2;
+            this.y = height * 0.2 + Math.sin(this.patrolFrame / 2) * height / 6;
+            this.patrolFrame+= 0.1;
+        } else {
+            this.patrolFrame = 0;
+            this.stage = "rise";
+        }
+    };
+    this.rise = () => {
+        this.y -= height * 0.01;
+        if (this.y < -0.1 * height) {
+            this.x = Math.floor(Math.random() * (width * 0.9) + width * 0.05);
+            this.stage = "charge";
+        }
+    };
+    this.charge = () => {
+        this.y += height * 0.02;
+        if (this.y > height * 1.05) {
+            this.y = -0.1 * height;
+            this.x = width / 2;
+            this.stage = "enter";
+        }
+    };
 }
 
 function BossSpawn(x, y) {
@@ -288,7 +331,7 @@ function BossSpawn(x, y) {
         ctx.drawImage(img.bossSpawn, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     };
     this.update = () => {
-        this.y += 0.0072;
+        this.y += height * 0.0072;
         if (this.y > height) {
             this.expended = true;
         }
