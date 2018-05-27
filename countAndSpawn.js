@@ -1,11 +1,10 @@
 function CountRegister() {
-    this.currentLevel = 0; // 0 is menu
+    this.currentLevel = 11; // 0 is menu
     this.sinceLastMeteorite = 0;
     this.nextMeteorite = Math.floor(Math.random() * 300) + 50;
     this.enemyWait = 0;
     this.levelFrame = 0;
-    this.levelLengthsInReality = [2500, 3000, 2500, 3000];
-    // this.levelLengthsInReality = [50, 50, 50, 3000];
+    this.levelLengthsInReality = [2500, 3000, 2500, 3000, 2500, 2500];
     this.levelLengths = [];
     this.timeoutSet = false;
     this.toothAlienInterval = undefined;
@@ -198,6 +197,31 @@ function CountRegister() {
                 }, rndSpawnTime);
                 this.meteoriteTimeoutSet = true;
             }
+        },
+        10: () => {
+            this.interlude();
+        },
+        11: () => {
+            if (!this.normalEnemyTimeoutSet) {
+                let rndSpawnTime = Math.floor(Math.random() * 600) + 20;
+                let enemyChoices = [Enemy, SkullAlien, EyeballAlien];
+                setTimeout(() => {
+                    enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
+                    this.normalEnemyTimeoutSet = false;
+                }, rndSpawnTime);
+                this.normalEnemyTimeoutSet = true;
+            }
+            if (!this.meteoriteTimeoutSet) {
+                let rndSpawnTime = Math.floor(Math.random() * 1500) + 200;
+                setTimeout(() => {
+                    enemies.push(new Meteorite(Math.floor(Math.random() * (width - 100)) + 50, 0, Math.floor(Math.random() * 7) + 5));
+                    this.meteoriteTimeoutSet = false;
+                }, rndSpawnTime);
+                this.meteoriteTimeoutSet = true;
+            }
+        },
+        12: () => {
+            this.interlude();
         }
     };
     this.interlude = () => {

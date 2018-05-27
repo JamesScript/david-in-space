@@ -399,8 +399,8 @@ function EyeballAlien(x, y) {
                 bullets[i].expended = true;
                 if (this.hp <= 0) {
                     if (Math.random() > 0.8) {
-                        let options = ["violin", "sax"];
-                        items.push(new Item(Math.random() > 0.5 ? options[0] : options[1], this.x, this.y));
+                        let options = ["violin", "sax", "bowler"];
+                        items.push(new Item(options[Math.floor(Math.random() * 3)], this.x, this.y));
                     }
                     booms.push(new Boom(this.x, this.y));
                     p1.score += 50;

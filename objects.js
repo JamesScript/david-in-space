@@ -15,7 +15,7 @@ function Player() {
     this.totalSpent = 0; // used to calculate total score
     this.dead = false;
     this.isCross = false;
-    this.uziAmmo = 200;
+    this.uziAmmo = 5000;
     this.show = () => {
         if (this.hp > 0) {
             let sprite = this.isCross ? img.dc : img.dj;
