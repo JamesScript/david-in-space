@@ -61,7 +61,7 @@ function init() {
 }
 
 function render() {
-    cursor("default"); // gets overriden, placed to avoid - carry-over glitches
+    cursor("default"); // gets overriden, placed to avoid carry-over glitches
     ctx.fillStyle = "#000000";
     ctx.fillRect(0,0,width,height);
     count.currentLevel === 0 ? menu() : gameScript();

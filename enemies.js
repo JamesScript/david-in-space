@@ -278,6 +278,14 @@ function Boss(x, y) {
                 }
             }
         }
+        if (!count.meteoriteTimeoutSet) {
+            let rndSpawnTime = Math.floor(Math.random() * 1500) + 200;
+            setTimeout(() => {
+                enemies.push(new Meteorite(Math.floor(Math.random() * (width - 100)) + 50, 0, Math.floor(Math.random() * 7) + 5));
+                count.meteoriteTimeoutSet = false;
+            }, rndSpawnTime);
+            count.meteoriteTimeoutSet = true;
+        }
     };
     this.enter = () => {
         this.y += height * 0.01;

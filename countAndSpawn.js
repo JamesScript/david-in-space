@@ -1,5 +1,5 @@
 function CountRegister() {
-    this.currentLevel = 0; // 0 is menu
+    this.currentLevel = 7; // 0 is menu
     this.sinceLastMeteorite = 0;
     this.nextMeteorite = Math.floor(Math.random() * 300) + 50;
     this.enemyWait = 0;
@@ -34,6 +34,10 @@ function CountRegister() {
     };
     this.level = {
         99: () => {
+            if (this.toothAlienIntervalSet) {
+                clearInterval(this.toothAlienInterval);
+                this.toothAlienIntervalSet = false;
+            }
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign="center";
             ctx.fillText("GAME OVER", width / 2, height / 2);
