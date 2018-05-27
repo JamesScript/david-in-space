@@ -363,3 +363,55 @@ function BossSpawn(x, y) {
     };
 
 }
+
+function EyeballAlien(x, y) {
+    this.x = x;
+    this.y = y;
+    this.w = width * 0.12;
+    this.h = height * 0.072;
+    this.xVel = 5;
+    this.yVel = 5;
+    this.hp = 3;
+    this.maxVel = 10;
+    this.expended = false;
+    this.show = () => {
+        ctx.drawImage(img.eyeballAlien, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    };
+    this.update = () => {
+        if (Math.abs(this.x - p1.x) < 20) {
+            this.maxVel = mapNums(this.y, 0, height, 12, 2);
+        }
+        if (this.x > p1.x) {
+            if (this.xVel > -this.maxVel) {
+                this.xVel -= 1;
+            }
+        } else if (this.x < p1.x) {
+            if (this.xVel < this.maxVel) {
+                this.xVel += 1;
+            }
+        }
+        this.y += this.yVel;
+        this.x += this.xVel;
+        for (let i = 0; i < bullets.length; i++) {
+            if (collision(this, bullets[i])) {
+                this.hp--;
+                aud.clone(2);
+                bullets[i].expended = true;
+                if (this.hp <= 0) {
+                    if (Math.random() > 0.8) {
+                        let options = ["violin", "sax"];
+                        items.push(new Item(Math.random() > 0.5 ? options[0] : options[1], this.x, this.y));
+                    }
+                    booms.push(new Boom(this.x, this.y));
+                    p1.score += 50;
+                    this.expended = true;
+                }
+            }
+        }
+        if (collision(this, p1)) {
+            p1.damage(20);
+            booms.push(new Boom(this.x, this.y));
+            this.expended = true;
+        }
+    };
+}

@@ -30,6 +30,7 @@ let img = {
     greenAlien: get("greenAlien"),
     skullAlien: get("skullAlien"),
     toothAlien: get("toothAlien"),
+    eyeballAlien: get("eyeballAlien"),
     boss: get("boss"),
     bossSpawn: get("bossSpawn"),
     meteorite: get("meteorite"),
@@ -167,7 +168,7 @@ function arsenal() {
         p1.equip = 1;
     }
     ctx.fillStyle = "#FF4444";
-    ctx.fillText(p1.uziAmmo, uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2);
+    ctx.fillText(p1.uziAmmo.toString(), uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2);
 }
 
 let pressOptions = {
@@ -229,21 +230,18 @@ document.body.addEventListener("mousemove", (e) => {
 
 document.body.addEventListener("mousedown", () => {
     mouse.down = true;
-    console.log("mousedown");
 }, false);
 
 document.body.addEventListener("mouseup", () => {
     mouse.down = false;
 }, false);
 
-document.body.addEventListener("touchstart", (e) => {
+document.body.addEventListener("touchstart", () => {
     mouse.down = true;
-    console.log("touchstart");
 }, false);
 
 document.body.addEventListener("touchend", () => {
     mouse.down = false;
-    console.log("touchend");
 }, false);
 
 // body.mousedown(function(e) {

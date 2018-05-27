@@ -1,5 +1,5 @@
 function CountRegister() {
-    this.currentLevel = 7; // 0 is menu
+    this.currentLevel = 0; // 0 is menu
     this.sinceLastMeteorite = 0;
     this.nextMeteorite = Math.floor(Math.random() * 300) + 50;
     this.enemyWait = 0;
@@ -177,6 +177,26 @@ function CountRegister() {
             }
             if (enemies.length === 0) {
                 this.interlude();
+            }
+        },
+        9: () => {
+            if (Math.random() > 0.98) {
+                enemies.push(new EyeballAlien(Math.random() * width, 0));
+                this.enemyWait = 0;
+            } else {
+                this.enemyWait++;
+                if (this.enemyWait >= 100) {
+                    enemies.push(new GreenAlien(width / 2, 0));
+                    this.enemyWait = 0;
+                }
+            }
+            if (!this.meteoriteTimeoutSet) {
+                let rndSpawnTime = Math.floor(Math.random() * 1500) + 200;
+                setTimeout(() => {
+                    enemies.push(new Meteorite(Math.floor(Math.random() * (width - 100)) + 50, 0, Math.floor(Math.random() * 7) + 5));
+                    this.meteoriteTimeoutSet = false;
+                }, rndSpawnTime);
+                this.meteoriteTimeoutSet = true;
             }
         }
     };
