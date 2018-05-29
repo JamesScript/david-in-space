@@ -15,7 +15,7 @@ function Player() {
     this.totalSpent = 0; // used to calculate total score
     this.dead = false;
     this.isCross = false;
-    this.uziAmmo = 5000;
+    this.uziAmmo = 500;
     this.show = () => {
         if (this.hp > 0) {
             let sprite = this.isCross ? img.dc : img.dj;
@@ -186,7 +186,8 @@ function Item(name, x, y) {
         "bowler": [50, 35, 50, 2],
         "violin": [40, 70, 100, 6],
         "sax": [50, 70, 100, 6],
-        "firstAid": [50, 40, 120, 25]
+        "firstAid": [50, 40, 120, 25],
+        "uziAmmo": [50, 50, 0, 0]
     };
     this.x = x;
     this.y = y;
@@ -209,6 +210,9 @@ function Item(name, x, y) {
             p1.score+= this.dimensions[this.name][2];
             p1.hp += this.dimensions[this.name][3];
             aud.clone(6);
+            if (this.name === "uziAmmo") {
+                p1.uziAmmo += 300;
+            }
             this.expended = true;
         }
         this.rot++;

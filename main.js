@@ -35,6 +35,7 @@ let img = {
     bossSpawn: get("bossSpawn"),
     meteorite: get("meteorite"),
     firstAid: get("firstAid"),
+    uziAmmo: get("uziAmmo"),
     beer: get("beer"),
     shop: get("shop")
 };

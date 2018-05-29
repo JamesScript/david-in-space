@@ -27,8 +27,11 @@ function Enemy(x, y) {
         this.x += this.xVel;
         for (let i = 0; i < bullets.length; i++) {
             if (collision(bullets[i], this)) {
-                if (Math.random() > 0.8) {
+                let rnd = Math.random();
+                if (rnd > 0.8) {
                     items.push(new Item("bowler", this.x, this.y));
+                } else if (rnd < 0.1) {
+                    items.push(new Item("uziAmmo", this.x, this.y));
                 }
                 aud.clone(2);
                 booms.push(new Boom(this.x, this.y));
