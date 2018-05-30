@@ -15,7 +15,9 @@ function Player() {
     this.totalSpent = 0; // used to calculate total score
     this.dead = false;
     this.isCross = false;
-    this.uziAmmo = 500;
+    this.uziAmmo = 2000;
+    this.rocketAmmo = 1000;
+    this.rocketDamage = 30;
     this.show = () => {
         if (this.hp > 0) {
             let sprite = this.isCross ? img.dc : img.dj;
@@ -78,19 +80,30 @@ function Player() {
     this.shoot = () => {
         if (
             shop.stage !== 2
+            && !paused
             && count.currentLevel > 0
             && p1.hp > 0
             && mouse.x > 0
             && mouse.x < width && mouse.y > 0
             && mouse.y < height * 0.9
         ) {
-            aud.clone(0);
-            bullets.push(new Bullet(this.x));
-            if (this.equip === 1 && this.uziAmmo > 0) {
-                this.uziAmmo--;
-            }
-            if (this.uziAmmo <= 0) {
-                this.equip = 0;
+            if (this.equip === 2) {
+                if (this.rocketAmmo > 0) {
+                    aud.clone(0); // change to rocket sound
+                    bullets.push(new Rocket(this.x));
+                    this.rocketAmmo--;
+                } else {
+                    this.equip = 0;
+                }
+            } else {
+                aud.clone(0);
+                bullets.push(new Bullet(this.x));
+                if (this.equip === 1 && this.uziAmmo > 0) {
+                    this.uziAmmo--;
+                }
+                if (this.uziAmmo <= 0) {
+                    this.equip = 0;
+                }
             }
         }
     };
@@ -124,6 +137,7 @@ function Bullet(x) {
     this.y = p1.y;
     this.w = width * 0.0121;
     this.h = height * 0.0217;
+    this.isRocket = false;
     this.speed = height * 0.0145;
     this.expended = false;
     this.show = () => {
@@ -136,6 +150,72 @@ function Bullet(x) {
             this.expended = true;
         }
     };
+}
+
+function Rocket(x) {
+    this.x = x;
+    this.y = p1.y;
+    this.w = width * 0.0221;
+    this.h = height * 0.0317;
+    this.isRocket = true;
+    this.speed = height * 0.0115;
+    this.expended = false;
+    this.show = () => {
+        ctx.fillStyle = "#AA00FF";
+        ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    };
+    this.update = () => {
+        this.y -= this.speed;
+        if (this.y < -this.h) {
+            this.expended = true;
+        }
+    };
+}
+
+function shrapnel(x, y) {
+    const destinationChoices = [
+        {x: 0, y: height * 0.12},
+        {x: width * 0.04, y: height * 0.08},
+        {x: width * 0.08, y: height * 0.04},
+        {x: width * 0.12, y: 0},
+        {x: width * 0.08, y: height * -0.04},
+        {x: width * 0.04, y: height * -0.08},
+        {x: 0, y: height * -0.12},
+        {x: width * -0.04, y: height * -0.08},
+        {x: width * -0.08, y: height * -0.04},
+        {x: width * -0.12, y: 0},
+        {x: width * -0.08, y: height * 0.04},
+        {x: width * -0.04, y: height * 0.08}
+    ];
+    setTimeout(() => {
+        for (let i = 0; i < 12; i++) {
+            bullets.push(new ShrapnelPiece(x, y, destinationChoices[i].x, destinationChoices[i].y));
+        }
+    }, 10);
+}
+
+function ShrapnelPiece(x, y, xVel, yVel) {
+    this.x = x;
+    this.y = y;
+    this.w = width * 0.012;
+    this.h = width * 0.012;
+    this.expended = false;
+    this.isRocket = false;
+    this.isShrapnel = true;
+    this.destination = {x: xVel, y: yVel};
+    this.show = () => {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.w, 2 * Math.PI, false);
+        ctx.fillStyle = "#AA00FF";
+        ctx.fill();
+    };
+    this.update = () => {
+        this.x += this.destination.x / 10;
+        this.y += this.destination.y / 10;
+        if (!collision(this, {x: width * 0.4, y: height * 0.4, w: width * 1.2, h: height * 1.2})) {
+            this.expended = true;
+        }
+    }
 }
 
 function Boom(x, y) {
@@ -187,7 +267,9 @@ function Item(name, x, y) {
         "violin": [40, 70, 100, 6],
         "sax": [50, 70, 100, 6],
         "firstAid": [50, 40, 120, 25],
-        "uziAmmo": [50, 50, 0, 0]
+        "beer": [50, 60, 100, 10],
+        "uziAmmo": [50, 50, 50, 0],
+        "rocketAmmo": [50, 50, 50, 0]
     };
     this.x = x;
     this.y = y;
@@ -212,6 +294,8 @@ function Item(name, x, y) {
             aud.clone(6);
             if (this.name === "uziAmmo") {
                 p1.uziAmmo += 300;
+            } else if (this.name === "rocketAmmo") {
+                p1.rocketAmmo += 5;
             }
             this.expended = true;
         }

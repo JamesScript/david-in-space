@@ -3,7 +3,7 @@ function ShopItem(name) {
     this.expended = false;
     this.sprite = () => {
         switch(this.name) {
-            case "potion":
+            case "beer":
                 return img.beer;
             case "firstAid":
                 return img.firstAid;
@@ -11,7 +11,7 @@ function ShopItem(name) {
     };
     this.cost = () => {
         switch(this.name) {
-            case "potion":
+            case "beer":
                 return 100;
             case "firstAid":
                 return 250;
@@ -19,7 +19,7 @@ function ShopItem(name) {
     };
     this.purchase = () => {
         switch(this.name) {
-            case "potion":
+            case "beer":
                 p1.hp += 10;
                 break;
             case "firstAid":

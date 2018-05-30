@@ -23,6 +23,7 @@ let img = {
     dj: get("jackson"),
     pistol: get("pistol"),
     uzi: get("uzi"),
+    rocketLauncher: get("rocketLauncher"),
     bowler: get("bowler"),
     violin: get("violin"),
     sax: get("sax"),
@@ -31,17 +32,21 @@ let img = {
     skullAlien: get("skullAlien"),
     toothAlien: get("toothAlien"),
     eyeballAlien: get("eyeballAlien"),
+    tongueAlien: get("tongueAlien"),
     boss: get("boss"),
     bossSpawn: get("bossSpawn"),
     meteorite: get("meteorite"),
+    bacteriophage: get("bacteriophage"),
     firstAid: get("firstAid"),
     uziAmmo: get("uziAmmo"),
+    rocketAmmo: get("rocketAmmo"),
     beer: get("beer"),
     shop: get("shop")
 };
 let aud = new Sound("audioSpriteTest.mp3");
 let hammertime = new Hammer(c);
 let isMobile = checkIfMobile();
+let paused = false;
 
 function init() {
     count.createLevelLengthsArray();
@@ -55,7 +60,7 @@ function init() {
         stars[i] = new Star(Math.random() * width, Math.random() * height, Math.random() * 5 + 1);
     }
     enemies[0] = new Enemy(width / 2, 0);
-    shop.stock.push(new ShopItem("potion"));
+    shop.stock.push(new ShopItem("beer"));
     shop.stock.push(new ShopItem("firstAid"));
     if (isMobile && window.innerWidth > window.innerHeight) {
         alert("If you are using mobile please switch to portrait view and reload this page.");
@@ -66,7 +71,13 @@ function render() {
     cursor("default"); // gets overriden, placed to avoid carry-over glitches
     ctx.fillStyle = "#000000";
     ctx.fillRect(0,0,width,height);
-    count.currentLevel === 0 ? menu() : gameScript();
+    if (paused) {
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#FFF";
+        ctx.fillText("Paused", width / 2, height / 2);
+    } else {
+        count.currentLevel === 0 ? menu() : gameScript();
+    }
     requestAnimationFrame(render);
 }
 
@@ -113,7 +124,7 @@ function gameScript() {
             objects[i][j].show();
             objects[i][j].update();
             if ("expended" in objects[i][j] && objects[i][j].expended) {
-                objects[i].splice(j, 1)
+                objects[i].splice(j, 1);
             }
         }
     }
@@ -156,20 +167,55 @@ function arsenal() {
         w: width * 0.12,
         h: height * 0.065
     };
+    let rocketCoords = {
+        x: width * 0.88,
+        y: height * 0.96,
+        w: width * 0.17,
+        h: height * 0.065
+    };
     p1.equip === 0 ? ctx.fillStyle = "#FFFF00" : ctx.fillStyle = "#999999";
     ctx.fillRect(pistolCoords.x - pistolCoords.w / 2, pistolCoords.y - pistolCoords.h / 2, pistolCoords.w, pistolCoords.h);
     p1.equip === 1 ? ctx.fillStyle = "#FFFF00" : ctx.fillStyle = "#999999";
     ctx.fillRect(uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2, uziCoords.w, uziCoords.h);
-    ctx.drawImage(img.pistol, pistolCoords.x - pistolCoords.w / 2, pistolCoords.y - pistolCoords.h / 2, pistolCoords.w, pistolCoords.h);
-    ctx.drawImage(img.uzi, uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2, uziCoords.w, uziCoords.h);
+    p1.equip === 2 ? ctx.fillStyle = "#FFFF00" : ctx.fillStyle = "#999999";
+    ctx.fillRect(rocketCoords.x - rocketCoords.w / 2, rocketCoords.y - rocketCoords.h / 2, rocketCoords.w, rocketCoords.h);
+    ctx.drawImage(img.pistol, pistolCoords.x - pistolCoords.w / 2, pistolCoords.y - pistolCoords.h / 2, pistolCoords.w * 0.9, pistolCoords.h * 0.9);
+    ctx.drawImage(img.uzi, uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2, uziCoords.w * 0.9, uziCoords.h * 0.9);
+    ctx.drawImage(img.rocketLauncher, rocketCoords.x - rocketCoords.w / 2, rocketCoords.y - rocketCoords.h / 2, rocketCoords.w * 0.9, rocketCoords.h * 0.9);
     if (collision(pistolCoords, mouse) && mouse.down) {
         p1.equip = 0;
     }
     if (collision(uziCoords, mouse) && mouse.down) {
         p1.equip = 1;
     }
-    ctx.fillStyle = "#FF4444";
-    ctx.fillText(p1.uziAmmo.toString(), uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 2);
+    if (collision(rocketCoords, mouse) && mouse.down) {
+        p1.equip = 2;
+    }
+    ctx.fillStyle = "#4444FF";
+    ctx.fillText(p1.uziAmmo.toString(), uziCoords.x - uziCoords.w / 2, uziCoords.y - uziCoords.h / 3);
+    ctx.fillText(p1.rocketAmmo.toString(), rocketCoords.x, rocketCoords.y - rocketCoords.h / 3);
+}
+
+function bulletHit(bullet) {
+    if (bullet.isRocket) {
+        bigBoom(bullet.x, bullet.y, 7, 500);
+        shrapnel(bullet.x, bullet.y);
+        return p1.rocketDamage;
+    } else if ("isShrapnel" in bullet) {
+        return 5;
+    } else {
+        return 1;
+    }
+}
+
+function bigBoom(x, y, magnitude, time) {
+    for (let j = 0; j < magnitude; j++) {
+        let rndX = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
+        let rndY = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
+        setTimeout(() => {
+            booms.push(new Boom(x + rndX, y + rndY));
+        }, Math.floor(Math.random() * time));
+    }
 }
 
 let pressOptions = {
@@ -244,6 +290,14 @@ document.body.addEventListener("touchstart", () => {
 document.body.addEventListener("touchend", () => {
     mouse.down = false;
 }, false);
+
+if (!isMobile) {
+    document.addEventListener('keypress', (event) => {
+        if (event.keyCode === 112) {
+            paused = !paused;
+        }
+    });
+}
 
 // body.mousedown(function(e) {
 //     console.log("mousedown");
