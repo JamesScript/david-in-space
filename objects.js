@@ -246,12 +246,13 @@ function Star(x, y, d) {
     this.y = y;
     this.w = d;
     this.h = d;
+    this.speed = height * 0.015;
     this.show = () => {
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(this.x, this.y, this.w, this.h);
     };
     this.update = () => {
-        this.y += 10;
+        this.y += this.speed;
         if (this.y > height + this.h) {
             this.w = this.h = Math.random() * 5 + 1;
             this.x = Math.random() * width;
@@ -317,11 +318,67 @@ function Shop() {
     this.timeoutSet = false;
     this.insufficientFunds = false;
     this.purchaseSpamTimeOutSet = false;
+    this.leftButtonCoords = {
+        x: width * 0.25,
+        y: height * 0.7,
+        w: width * 0.2,
+        h: height * 0.15
+    };
+    this.rightButtonCoords = {
+        x: width * 0.75,
+        y: height * 0.7,
+        w: width * 0.2,
+        h: height * 0.15
+    };
     this.leaveButtonCoords = {
         x: width * 0.5,
         y: height * 0.85,
         w: width * 0.6,
         h: height * 0.1
+    };
+    this.leftButton = () => {
+        if (this.stockPage > 0) {
+            let lbc = this.leftButtonCoords;
+            ctx.fillStyle = "#444444";
+            ctx.fillRect(lbc.x - lbc.w / 2, lbc.y - lbc.h / 2, lbc.w, lbc.h);
+            ctx.fillStyle = "#FFFFAA";
+            if (collision(mouse, lbc)) {
+                cursor("pointer");
+                ctx.fillStyle = "#FFFFFF";
+                if (mouse.down && !this.purchaseSpamTimeOutSet) {
+                    this.stockPage--;
+                    setTimeout(() => { this.purchaseSpamTimeOutSet = false }, 500);
+                    this.purchaseSpamTimeOutSet = true;
+                }
+            }
+            ctx.beginPath();
+            ctx.moveTo(width * 0.3, height * 0.65);
+            ctx.lineTo(width * 0.2, height * 0.7);
+            ctx.lineTo(width * 0.3, height * 0.75);
+            ctx.fill();
+        }
+    };
+    this.rightButton = () => {
+        if (this.stockPage < Math.floor((this.stock.length - 1) / 9)) {
+            let rbc = this.rightButtonCoords;
+            ctx.fillStyle = "#444444";
+            ctx.fillRect(rbc.x - rbc.w / 2, rbc.y - rbc.h / 2, rbc.w, rbc.h);
+            ctx.fillStyle = "#FFFFAA";
+            if (collision(mouse, rbc)) {
+                cursor("pointer");
+                ctx.fillStyle = "#FFFFFF";
+                if (mouse.down && !this.purchaseSpamTimeOutSet) {
+                    this.stockPage++;
+                    setTimeout(() => { this.purchaseSpamTimeOutSet = false }, 500);
+                    this.purchaseSpamTimeOutSet = true;
+                }
+            }
+            ctx.beginPath();
+            ctx.moveTo(width * 0.7, height * 0.65);
+            ctx.lineTo(width * 0.8, height * 0.7);
+            ctx.lineTo(width * 0.7, height * 0.75);
+            ctx.fill();
+        }
     };
     this.leaveButton = () => {
         let lbc = this.leaveButtonCoords;
@@ -333,6 +390,11 @@ function Shop() {
             cursor("pointer");
             if (mouse.down) {
                 leaveWordHeight = height * 0.88;
+                if (count.currentLevel === 20) {
+                    for (let i = 0; i < stars.length; i++) {
+                        stars[i].speed = height * 0.015;
+                    }
+                }
                 if (!this.timeoutSet) {
                     setTimeout(() => {
                         this.stage = 3;
@@ -349,13 +411,20 @@ function Shop() {
         ctx.fillText("Leave", width / 2, leaveWordHeight);
 
     };
+    this.restock = () => {
+        let choices = ["beer", "firstAid", "barrier", "uziAmmo", "rocket"];
+        let rnd = Math.ceil(Math.random() * 6);
+        for (let i = 0; i < rnd; i++) {
+            this.stock.push(new ShopItem(choices[Math.floor(Math.random() * choices.length)]));
+        }
+    };
     this.shopStock = () => {
         if (shop.stock.length === 0) {
             ctx.font = "20px manaspace";
             ctx.fillText("There is nothing left in stock", width / 2, height * 0.5);
         } else {
             let cell = width * 0.2;
-            for (let i = 0; i < this.stock.length && i < 9; i++) {
+            for (let i = 0; i < this.stock.length - (this.stockPage * 9) && i < 9; i++) {
                 let currentItem = this.stock[this.stockPage * 9 + i];
                 currentItem.display(i % 3 * cell + cell, Math.floor(i / 3) * cell + cell * 2);
                 if (currentItem.expended) {
@@ -381,6 +450,8 @@ function Shop() {
             ctx.fillText("SHOP", width / 2, height * 0.2);
             this.shopStock();
             this.leaveButton();
+            this.rightButton();
+            this.leftButton();
             if (this.insufficientFunds && mouse.down) {
                 ctx.fillStyle = "#000";
                 ctx.fillRect(width * 0.05, height * 0.45, width * 0.9, height * 0.1);

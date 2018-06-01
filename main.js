@@ -37,10 +37,12 @@ let img = {
     bossSpawn: get("bossSpawn"),
     meteorite: get("meteorite"),
     bacteriophage: get("bacteriophage"),
+    finalBoss: get("finalBoss"),
     firstAid: get("firstAid"),
     uziAmmo: get("uziAmmo"),
     rocketAmmo: get("rocketAmmo"),
     beer: get("beer"),
+    barrier: get("barrier"),
     shop: get("shop")
 };
 let aud = new Sound("audioSpriteTest.mp3");
@@ -59,9 +61,12 @@ function init() {
     for (let i = 0; i < 20; i++) {
         stars[i] = new Star(Math.random() * width, Math.random() * height, Math.random() * 5 + 1);
     }
-    enemies[0] = new Enemy(width / 2, 0);
+    // enemies[0] = new Enemy(width / 2, 0);
     shop.stock.push(new ShopItem("beer"));
     shop.stock.push(new ShopItem("firstAid"));
+    shop.stock.push(new ShopItem("uziAmmo"));
+    shop.stock.push(new ShopItem("rocket"));
+    shop.stock.push(new ShopItem("barrier"));
     if (isMobile && window.innerWidth > window.innerHeight) {
         alert("If you are using mobile please switch to portrait view and reload this page.");
     }
@@ -218,6 +223,7 @@ function bigBoom(x, y, magnitude, time) {
     }
 }
 
+
 let pressOptions = {
     event: 'press',
     // pointer: 1,
@@ -226,39 +232,6 @@ let pressOptions = {
 };
 
 hammertime.get('press').set(pressOptions);
-
-// hammertime.on('touchstart', function(ev) {
-//     mouse.down = true;
-// });
-//
-// hammertime.on('touchend', function(ev) {
-//
-//     mouse.down = false;
-// });
-//
-// hammertime.on('press', function(ev) {
-//     alert("press");
-//     mouse.down = true;
-// });
-//
-// hammertime.on('pressup', function(ev) {
-//     alert("pressup");
-//     mouse.down = false;
-// });
-
-// body.touchstart(function(e) {
-//     handleMouse(e);
-//     mouse.down = true;
-// });
-//
-// body.touchend(function(e) {
-//     handleMouse(e)
-//     mouse.down = false;
-// });
-
-// body.mousemove(function(e) {
-//     handleMouse(e)
-// });
 
 hammertime.on('pan', function(ev) {
     mouse.x = ev.srcEvent.pageX - gc.offset().left;

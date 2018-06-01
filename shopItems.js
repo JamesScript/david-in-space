@@ -1,37 +1,18 @@
 function ShopItem(name) {
     this.name = name;
     this.expended = false;
-    this.sprite = () => {
-        switch(this.name) {
-            case "beer":
-                return img.beer;
-            case "firstAid":
-                return img.firstAid;
-        }
-    };
-    this.cost = () => {
-        switch(this.name) {
-            case "beer":
-                return 100;
-            case "firstAid":
-                return 250;
-        }
-    };
-    this.purchase = () => {
-        switch(this.name) {
-            case "beer":
-                p1.hp += 10;
-                break;
-            case "firstAid":
-                p1.hp += 25;
-                break;
-        }
+    this.itemVar = {
+        "beer": [img.beer, 100, () => {p1.hp += 10}],
+        "firstAid": [img.firstAid, 250, () => {p1.hp += 25}],
+        "barrier": [img.barrier, 1000, () => {p1.barrier += 1}],
+        "uziAmmo": [img.uziAmmo, 800, () => {p1.uziAmmo += 300}],
+        "rocket": [img.rocketAmmo, 2000, () => {p1.rocketAmmo += 5}]
     };
     this.display = (x, y) => {
         let sq = width * 0.18;
         ctx.fillStyle = "#005cb7";
         ctx.fillRect(x, y, sq, sq);
-        ctx.drawImage(this.sprite(), x + 2, y, sq, sq);
+        ctx.drawImage(this.itemVar[this.name][0], x + 2, y, sq, sq);
         ctx.font = "15px manaspace";
         ctx.fillStyle = "#FFF";
         ctx.globalAlpha = 0.5;
@@ -49,13 +30,13 @@ function ShopItem(name) {
             cursor("pointer");
             shop.insufficientFunds = false;
             if (mouse.down && !shop.purchaseSpamTimeOutSet) {
-                if (p1.score < this.cost()) {
+                if (p1.score < this.itemVar[this.name][1]) {
                     shop.insufficientFunds = true;
                 } else {
-                    p1.score -= this.cost();
-                    p1.totalSpent += this.cost();
+                    p1.score -= this.itemVar[this.name][1];
+                    p1.totalSpent += this.itemVar[this.name][1];
                     shop.purchaseSpamTimeOutSet = true;
-                    this.purchase();
+                    this.itemVar[this.name][2]();
                     this.expended = true;
                     setTimeout(() => { shop.purchaseSpamTimeOutSet = false }, 500);
                 }
@@ -63,6 +44,6 @@ function ShopItem(name) {
         } else {
             ctx.fillStyle = "#FFF";
         }
-        ctx.fillText(this.cost(), x + width * 0.09, y + width * 0.18);
+        ctx.fillText(this.itemVar[this.name][1], x + width * 0.09, y + width * 0.18);
     };
 }

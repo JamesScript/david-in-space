@@ -4,9 +4,9 @@ function Enemy(x, y) {
     this.w = width * 0.12;
     this.h = height * 0.072;
     this.hp = 1;
-    this.xVel = 5;
-    this.yVel = 5;
-    this.maxVel = 10;
+    this.xVel = width * 0.012;
+    this.yVel = height * 0.007;
+    this.maxVel = width * 0.025;
     this.expended = false;
     this.show = () => {
         ctx.drawImage(img.enemy, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
@@ -17,11 +17,11 @@ function Enemy(x, y) {
         }
         if (this.x > p1.x) {
             if (this.xVel > -this.maxVel) {
-                this.xVel -= 1;
+                this.xVel -= width * 0.0025;
             }
         } else if (this.x < p1.x) {
             if (this.xVel < this.maxVel) {
-                this.xVel += 1;
+                this.xVel += width * 0.0025;
             }
         }
         this.y += this.yVel;
@@ -56,7 +56,7 @@ function Enemy(x, y) {
 }
 
 function GreenAlien(x, y) {
-    this.x = x;
+    this.x = width / 2;
     this.y = y;
     this.w = width * 0.24;
     this.h = height * 0.072;
@@ -206,6 +206,77 @@ function ToothAlien(x, y) {
     };
 }
 
+function TongueAlien(x, y) {
+    this.x = x;
+    this.y = y;
+    this.w = width * 0.146;
+    this.h = height * 0.086;
+    this.yVel = height * 0.004;
+    this.hp = 3;
+    this.expended = false;
+    this.shootingTimeoutSet = false;
+    this.show = () => {
+        ctx.drawImage(img.tongueAlien, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    };
+    this.update = () => {
+        this.y += this.yVel;
+        if (!this.shootingTimeoutSet) {
+            let rnd = Math.floor(Math.random() * 2000) + 500;
+            setTimeout(() => {
+                enemies.push(new TongueAlienBullet(this.x, this.y));
+                this.shootingTimeoutSet = false;
+            }, rnd);
+            this.shootingTimeoutSet = true;
+        }
+        for (let i = 0; i < bullets.length; i++) {
+            if (collision(this, bullets[i])) {
+                this.hp -= bulletHit(bullets[i]);
+                aud.clone(2);
+                bullets[i].expended = true;
+                if (this.hp <= 0) {
+                    if (Math.random() > 0.8) {
+                        items.push(new Item("bowler", this.x, this.y));
+                    }
+                    booms.push(new Boom(this.x, this.y));
+                    p1.score += 50;
+                    this.expended = true;
+                }
+            }
+        }
+        if (collision(this, p1)) {
+            p1.damage(15);
+            booms.push(new Boom(this.x, this.y));
+            this.expended = true;
+        }
+        if (this.y > height + this.h) {
+            this.expended = true;
+        }
+    };
+}
+
+function TongueAlienBullet(x, y) {
+    this.x = x;
+    this.y = y;
+    this.w = width * 0.0121;
+    this.h = height * 0.0217;
+    this.speed = height * 0.01;
+    this.expended = false;
+    this.show = () => {
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    };
+    this.update = () => {
+        this.y += this.speed;
+        if (this.y > height * 1.1) {
+            this.expended = true;
+        }
+        if (collision(this, p1)) {
+            p1.damage(10);
+            this.expended = true;
+        }
+    };
+}
+
 function Meteorite(x, y, speed) {
     this.x = x;
     this.y = y;
@@ -251,17 +322,19 @@ function Meteorite(x, y, speed) {
 function Boss(x, y) {
     this.x = x;
     this.y = y;
-    this.w = width * 0.36;
+    this.w = count.currentLevel === 9 ? width * 0.36 : width * 0.4;
     this.h = height * 0.173;
-    this.hp = 120;
+    this.hp = count.currentLevel === 9 ? 120 : 260;
+    this.spawns = count.currentLevel === 9 ? BossSpawn : ToothAlien;
     this.patrolFrame = 0;
     this.expended = false;
     this.stage = "enter";
     this.fireTimeoutSet = false;
     this.hitTimeoutSet = false;
     this.canTakeDamage = true;
+    this.sprite = count.currentLevel === 9 ? img.boss : img.finalBoss;
     this.show = () => {
-        ctx.drawImage(img.boss, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+        ctx.drawImage(this.sprite, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     };
     this.update = () => {
         this[this.stage]();
@@ -288,7 +361,7 @@ function Boss(x, y) {
                 }
                 if (this.hp <= 0) {
                     booms.push(new Boom(this.x, this.y));
-                    this.expended = true;
+                    this.expended = count.bossKilled = true;
                     bigBoom(this.x, this.y, 15, 1000);
                 }
             }
@@ -305,7 +378,7 @@ function Boss(x, y) {
             let rndTime = Math.floor(Math.random() * 400) + 200;
             let rndPos = Math.floor(Math.random() * 100) - 50;
             setTimeout(() => {
-                enemies.push(new BossSpawn(this.x + rndPos, this.y));
+                enemies.push(new this.spawns(this.x + rndPos, this.y));
                 this.fireTimeoutSet = false;
             }, rndTime);
             this.fireTimeoutSet = true;

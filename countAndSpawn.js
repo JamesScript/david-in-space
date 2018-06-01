@@ -4,7 +4,7 @@ function CountRegister() {
     this.nextMeteorite = Math.floor(Math.random() * 300) + 50;
     this.enemyWait = 0;
     this.levelFrame = 0;
-    this.levelLengthsInReality = [2500, 3000, 2500, 3000, 8055, 2500, 2500, 3000, 2500];
+    this.levelLengthsInReality = [2500, 3000, 2500, 3000, 8055, 2500, 2500, 3000, 2500, 8055];
     this.levelLengths = [];
     this.timeoutSet = false;
     this.toothAlienInterval = undefined;
@@ -16,6 +16,20 @@ function CountRegister() {
     this.bossSpawned = false;
     this.bossKilled = false;
     this.gameOver = false;
+    this.finalMessages = [
+        "Congratulations!!",
+        "You have saved our solar system from the alien predators.",
+        "All residents of Earth, Mars and Io cannot express ",
+        "the full extent of their gratitude.",
+        "It is now time to invade the home planet of the predators.",
+        "Defeat as many foes as you can to get the highest score you can.",
+        "This will be your last chance to stock up on supplies from the shop.",
+        "After this there is no turning back. We are eternally grateful for",
+        "your noble sacrifice. Godspeed -- the human race"
+    ];
+    this.messageSlice = this.finalMessages.slice();
+    this.messageTimeoutSet = false;
+    this.bonusLevelSpawnFrequency = 1500;
     this.createLevelLengthsArray = () => {
         for (let i = 0; i < this.levelLengthsInReality.length; i++) {
             this.levelLengths.push(1);
@@ -25,12 +39,13 @@ function CountRegister() {
     };
     this.go = () => {
         this.level[this.currentLevel]();
-        if (this.currentLevel % 2 === 1 && this.currentLevel !== 9) {
+        if (this.currentLevel % 2 === 1 && [9, 19, 21].indexOf(this.currentLevel) === -1) {
             this.levelFrame++;
         }
         if (this.levelFrame >= this.levelLengths[this.currentLevel]) {
             this.levelFrame = 0;
             this.currentLevel++;
+            shop.restock();
         }
     };
     this.level = {
@@ -188,7 +203,10 @@ function CountRegister() {
                 }, rndSpawnTime);
                 this.meteoriteTimeoutSet = true;
             }
-            if (enemies.length === 0) this.currentLevel = 10;
+            if (enemies.length === 0) {
+                this.currentLevel = 10;
+                this.bossSpawned = this.bossKilled = false;
+            }
         },
         10: () => {
             this.interlude();
@@ -240,12 +258,23 @@ function CountRegister() {
         },
         15: () => {
             if (!this.normalEnemyTimeoutSet) {
-                let rndSpawnTime = Math.floor(Math.random() * 400) + 20;
-                let enemyChoices = [Enemy, SkullAlien, EyeballAlien];
+                // let rndSpawnTime = Math.floor(Math.random() * 400) + 20;
+                // let enemyChoices = [Enemy, SkullAlien, EyeballAlien];
+                // setTimeout(() => {
+                //     enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
+                //     this.normalEnemyTimeoutSet = false;
+                // }, rndSpawnTime);
+                let rndSpawnTime = Math.floor(Math.random() * 1500) + 300;
+                let enemyChoices = [Enemy, SkullAlien, EyeballAlien, TongueAlien];
                 setTimeout(() => {
-                    enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
+                    let rnd = Math.ceil(Math.random() * 6);
+                    let xGap = width / (rnd + 1);
+                    for (let i = 0; i < rnd; i++) {
+                        enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](xGap * (i+1), 0 - Math.random() * 100));
+                    }
                     this.normalEnemyTimeoutSet = false;
                 }, rndSpawnTime);
+                this.normalEnemyTimeoutSet = true;
                 this.normalEnemyTimeoutSet = true;
             }
             if (!this.meteoriteTimeoutSet) {
@@ -277,7 +306,7 @@ function CountRegister() {
         17: () => {
             if (!this.normalEnemyTimeoutSet) {
                 let rndSpawnTime = Math.floor(Math.random() * 1200) + 500;
-                let enemyChoices = [Enemy, SkullAlien, EyeballAlien, ToothAlien];
+                let enemyChoices = [Enemy, SkullAlien, EyeballAlien, ToothAlien, TongueAlien];
                 setTimeout(() => {
                     enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
                     this.normalEnemyTimeoutSet = false;
@@ -303,6 +332,85 @@ function CountRegister() {
         },
         18: () => {
             this.interlude();
+        },
+        19: () => {
+            if (!this.bossSpawned) {
+                enemies.push(new Boss(width / 2, 0));
+                this.bossSpawned = true;
+            }
+            if (!this.meteoriteTimeoutSet && !this.bossKilled) {
+                let rndSpawnTime = Math.floor(Math.random() * 1500) + 200;
+                setTimeout(() => {
+                    enemies.push(new Meteorite(Math.floor(Math.random() * (width - 100)) + 50, 0, Math.floor(Math.random() * 7) + 5));
+                    this.meteoriteTimeoutSet = false;
+                }, rndSpawnTime);
+                this.meteoriteTimeoutSet = true;
+            }
+            if (enemies.length === 0) {
+                this.currentLevel = 20;
+                this.bossSpawned = this.bossKilled = false;
+                if (this.messageSlice.length === 0) this.messageSlice = this.finalMessages.slice();
+            }
+        },
+        20: () => {
+            if (this.bonusLevelSpawnFrequency < 1500) this.bonusLevelSpawnFrequency = 1500;
+            if (this.messageSlice.length > 0) {
+                for (let i = 0; i < stars.length; i++) {
+                    stars[i].speed *= 0.98;
+                }
+            }
+            this.gameComplete();
+        },
+        21: () => {
+            // if (!this.normalEnemyTimeoutSet) {
+            //     let rndSpawnTime = Math.floor(Math.random() * 1200) + 100;
+            //     let enemyChoices = [Enemy, GreenAlien, SkullAlien, EyeballAlien, ToothAlien, TongueAlien];
+            //     setTimeout(() => {
+            //         enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
+            //         this.normalEnemyTimeoutSet = false;
+            //     }, rndSpawnTime);
+            //     this.normalEnemyTimeoutSet = true;
+            // }
+            if (!this.normalEnemyTimeoutSet) {
+                let rndSpawnTime = Math.floor(Math.random() * this.bonusLevelSpawnFrequency) + 200;
+                let enemyChoices = [Enemy, GreenAlien, SkullAlien, EyeballAlien, ToothAlien, TongueAlien];
+                setTimeout(() => {
+                    let rnd = Math.ceil(Math.random() * 6);
+                    let xGap = width / (rnd + 1);
+                    for (let i = 0; i < rnd; i++) {
+                        enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](xGap * (i+1), 0 - Math.random() * 100));
+                    }
+                    if (this.bonusLevelSpawnFrequency > 20) this.bonusLevelSpawnFrequency -= 20;
+                    this.normalEnemyTimeoutSet = false;
+                }, rndSpawnTime);
+                this.normalEnemyTimeoutSet = true;
+            }
+            if (!this.bacteriophageTimeoutSet) {
+                let rndSpawnTime = Math.floor(Math.random() * 1500) + 200;
+                setTimeout(() => {
+                    enemies.push(new Bacteriophage(Math.floor(Math.random() * (width - 100)) + 50, 0, Math.floor(Math.random() * 3) + 3));
+                    this.bacteriophageTimeoutSet = false;
+                }, rndSpawnTime);
+                this.bacteriophageTimeoutSet = true;
+            }
+            if (!this.meteoriteTimeoutSet) {
+                let rndSpawnTime = Math.floor(Math.random() * 1500) + 200;
+                setTimeout(() => {
+                    enemies.push(new Meteorite(Math.floor(Math.random() * (width - 100)) + 50, 0, Math.floor(Math.random() * 7) + 5));
+                    this.meteoriteTimeoutSet = false;
+                }, rndSpawnTime);
+                this.meteoriteTimeoutSet = true;
+            }
+            if (!this.toothAlienIntervalSet) {
+                let xGap = width / 6;
+                this.toothAlienInterval = setInterval(() => {
+                    for (let i = 0; i < 5; i++) {
+                        let initialHeight = i % 2 === 0 ? 0 : -100;
+                        enemies.push(new ToothAlien(xGap * (i+1), initialHeight));
+                    }
+                }, 5000);
+                this.toothAlienIntervalSet = true;
+            }
         }
     };
     this.interlude = () => {
@@ -328,4 +436,39 @@ function CountRegister() {
             }
         }
     };
+    this.gameComplete = () => {
+        if (!this.messageTimeoutSet) {
+            setTimeout(() => {
+                this.messageSlice.shift();
+                this.messageTimeoutSet = false;
+            }, 3500);
+            this.messageTimeoutSet = true;
+        }
+        if (this.messageSlice.length > 0) {
+            ctx.fillStyle = "#000000";
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, width, height);
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = "#FFFFFF";
+            ctx.textAlign="center";
+            let message = this.messageSlice[0];
+            let arr = message.split(" ");
+            let lines = [];
+            let toConcat = "";
+            while (arr.length > 0) {
+                toConcat = toConcat.concat(arr[0] + " ");
+                console.log(toConcat);
+                arr.shift();
+                if (toConcat.length >= 20 || arr.length === 0) {
+                    lines.push(toConcat);
+                    toConcat = "";
+                }
+            }
+            for (let i = 0; i < lines.length; i++) {
+                ctx.fillText(lines[i], width / 2, height / 2 + i * (height * 0.03));
+            }
+        } else {
+            this.interlude();
+        }
+    }
 }
