@@ -270,7 +270,8 @@ function Item(name, x, y) {
         "firstAid": [50, 40, 120, 25],
         "beer": [50, 60, 100, 10],
         "uziAmmo": [50, 50, 50, 0],
-        "rocketAmmo": [50, 50, 50, 0]
+        "rocketAmmo": [50, 50, 50, 0],
+        "barrier": [50, 50, 100, 0]
     };
     this.x = x;
     this.y = y;
@@ -297,6 +298,8 @@ function Item(name, x, y) {
                 p1.uziAmmo += 200;
             } else if (this.name === "rocketAmmo") {
                 p1.rocketAmmo += 3;
+            } else if (this.name === "barrier") {
+                p1.barrier++;
             }
             this.expended = true;
         }
@@ -428,7 +431,7 @@ function Shop() {
                 let currentItem = this.stock[this.stockPage * 9 + i];
                 currentItem.display(i % 3 * cell + cell, Math.floor(i / 3) * cell + cell * 2);
                 if (currentItem.expended) {
-                    this.stock.splice(i, 1);
+                    this.stock.splice(i + (this.stockPage * 9), 1);
                 }
             }
         }

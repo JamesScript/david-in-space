@@ -223,13 +223,13 @@ function bigBoom(x, y, magnitude, time) {
     }
 }
 
-function drop(x, y, nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket) {
-    let rollDice = enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket);
+function drop(x, y, nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier) {
+    let rollDice = enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier);
     if (rollDice !== "nothing") items.push(new Item(rollDice, x, y));
 }
 
-function enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket) {
-    let choices = ["nothing", "bowler", "sax", "violin", "firstAid", "beer", "uziAmmo", "rocketAmmo"];
+function enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier) {
+    let choices = ["nothing", "bowler", "sax", "violin", "firstAid", "beer", "uziAmmo", "rocketAmmo", "barrier"];
     let args = Array.prototype.slice.call(arguments);
     let totalProportions = args.reduce((a, b) => a + b);
     let rnd = Math.floor(Math.random() * totalProportions);
