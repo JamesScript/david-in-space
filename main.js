@@ -155,8 +155,6 @@ function display() {
         ctx.fillRect(60, height * 0.96, (p1.hp / p1.maxHp) * lifebarWidth, height * 0.02);
     }
     arsenal();
-    // ctx.font = "30px manaspace";
-    // ctx.fillText("Mouse Down: " + mouse.down, 30, height * 0.1);
 }
 
 function arsenal() {
@@ -290,18 +288,6 @@ if (!isMobile) {
         }
     });
 }
-
-// body.mousedown(function(e) {
-//     console.log("mousedown");
-//     handleMouse(e);
-//     mouse.down = true;
-//     click();
-// });
-//
-// body.mouseup(function() {
-//     console.log("mouseup");
-//     mouse.down = false;
-// });
 
 init();
 render();
