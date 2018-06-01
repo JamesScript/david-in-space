@@ -15,8 +15,8 @@ function Player() {
     this.totalSpent = 0; // used to calculate total score
     this.dead = false;
     this.isCross = false;
-    this.uziAmmo = 2000;
-    this.rocketAmmo = 1000;
+    this.uziAmmo = 200;
+    this.rocketAmmo = 5;
     this.rocketDamage = 30;
     this.show = () => {
         if (this.hp > 0) {
@@ -294,9 +294,9 @@ function Item(name, x, y) {
             p1.hp += this.dimensions[this.name][3];
             aud.clone(6);
             if (this.name === "uziAmmo") {
-                p1.uziAmmo += 300;
+                p1.uziAmmo += 200;
             } else if (this.name === "rocketAmmo") {
-                p1.rocketAmmo += 5;
+                p1.rocketAmmo += 3;
             }
             this.expended = true;
         }

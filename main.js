@@ -223,6 +223,25 @@ function bigBoom(x, y, magnitude, time) {
     }
 }
 
+function drop(x, y, nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket) {
+    let rollDice = enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket);
+    if (rollDice !== "nothing") items.push(new Item(rollDice, x, y));
+}
+
+function enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket) {
+    let choices = ["nothing", "bowler", "sax", "violin", "firstAid", "beer", "uziAmmo", "rocketAmmo"];
+    let args = Array.prototype.slice.call(arguments);
+    let totalProportions = args.reduce((a, b) => a + b);
+    let rnd = Math.floor(Math.random() * totalProportions);
+    let totalNumber = 0;
+    for (let i = 0; i < args.length; i++) {
+        if (rnd < args[i] + totalNumber) {
+            return choices[i];
+        } else {
+            totalNumber += args[i];
+        }
+    }
+}
 
 let pressOptions = {
     event: 'press',
