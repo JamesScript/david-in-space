@@ -49,8 +49,10 @@ let aud = new Sound("audioSpriteTest.mp3");
 let hammertime = new Hammer(c);
 let isMobile = checkIfMobile();
 let paused = false;
+let personalBest = 0;
 
 function init() {
+    checkCookie("dcdjScore");
     count.createLevelLengthsArray();
     shop.x = width / 2;
     ctx = c.getContext("2d");
@@ -112,6 +114,11 @@ function menu() {
     ctx.font = font(30);
     ctx.textAlign = "center";
     ctx.fillText("CHOOSE YOUR DAVID", width * 0.5, height * 0.2);
+    if (personalBest > 0) {
+        ctx.font = font(20);
+        ctx.fillText("Personal Best: " + personalBest, width * 0.5, height * 0.3);
+        ctx.font = font(30);
+    }
     ctx.fillStyle = dcBlock.selected ? "#FFFFFF" : "#b29739";
     ctx.fillText("CROSS", width * 0.5, height * 0.38);
     ctx.fillStyle = djBlock.selected ? "#FFFFFF" : "#b29739";

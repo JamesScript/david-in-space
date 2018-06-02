@@ -33,12 +33,6 @@ function Enemy(x, y) {
                 bullets[i].expended = true;
                 booms.push(new Boom(this.x, this.y));
                 if (this.hp <= 0) {
-                    // let rnd = Math.random();
-                    // if (rnd > 0.8) {
-                    //     items.push(new Item("bowler", this.x, this.y));
-                    // } else if (rnd < 0.1) {
-                    //     items.push(new Item("uziAmmo", this.x, this.y));
-                    // }
                     drop(this.x, this.y, 25, 8, 0, 0, 1, 1, 4, 1, 1);
                     p1.score += 10;
                     this.expended = true;
@@ -78,10 +72,6 @@ function GreenAlien(x, y) {
                 aud.clone(2);
                 bullets[i].expended = true;
                 if (this.hp <= 0) {
-                    // if (Math.random() > 0.8) {
-                    //     let options = ["violin", "sax"];
-                    //     items.push(new Item(options[this.dir], this.x, this.y));
-                    // }
                     drop(this.x, this.y, 10, 0, 5, 5, 0, 0, 1, 1, 1);
                     booms.push(new Boom(this.x, this.y));
                     p1.score += 50;
@@ -157,9 +147,6 @@ function SkullAlien(x, y) {
                 aud.clone(2);
                 bullets[i].expended = true;
                 if (this.hp <= 0) {
-                    // if (Math.random() > 0.8) {
-                    //     items.push(new Item("bowler", this.x, this.y));
-                    // }
                     drop(this.x, this.y, 25, 5, 2, 2, 1, 1, 1, 1, 1);
                     booms.push(new Boom(this.x, this.y));
                     p1.score += 40;
@@ -189,9 +176,6 @@ function ToothAlien(x, y) {
                 aud.clone(2);
                 bullets[i].expended = true;
                 if (this.hp <= 0) {
-                    // if (Math.random() > 0.8) {
-                    //     items.push(new Item("bowler", this.x, this.y));
-                    // }
                     drop(this.x, this.y, 20, 3, 3, 3, 4, 6, 1, 1, 1);
                     booms.push(new Boom(this.x, this.y));
                     p1.score += 50;
@@ -238,9 +222,6 @@ function TongueAlien(x, y) {
                 aud.clone(2);
                 bullets[i].expended = true;
                 if (this.hp <= 0) {
-                    // if (Math.random() > 0.8) {
-                    //     items.push(new Item("bowler", this.x, this.y));
-                    // }
                     drop(this.x, this.y, 25, 6, 1, 1, 5, 5, 3, 10, 1);
                     booms.push(new Boom(this.x, this.y));
                     p1.score += 50;
@@ -367,6 +348,7 @@ function Boss(x, y) {
                 if (this.hp <= 0) {
                     drop(this.x, this.y, 0, 0, 0, 0, 0, 0, 1, 1, 1);
                     booms.push(new Boom(this.x, this.y));
+                    p1.score += 2000;
                     this.expended = count.bossKilled = true;
                     bigBoom(this.x, this.y, 15, 1000);
                 }
@@ -437,9 +419,6 @@ function BossSpawn(x, y) {
                 bullets[i].expended = true;
                 booms.push(new Boom(this.x, this.y));
                 if (this.hp <= 0) {
-                    // if (Math.random() > 0.8) {
-                    //     items.push(new Item("bowler", this.x, this.y));
-                    // }
                     drop(this.x, this.y, 25, 10, 1, 1, 1, 1, 2, 1, 1);
                     p1.score += 10;
                     this.expended = true;
@@ -489,10 +468,6 @@ function EyeballAlien(x, y) {
                 aud.clone(2);
                 bullets[i].expended = true;
                 if (this.hp <= 0) {
-                    // if (Math.random() > 0.8) {
-                    //     let options = ["violin", "sax", "bowler", "beer"];
-                    //     items.push(new Item(options[Math.floor(Math.random() * options.length)], this.x, this.y));
-                    // }
                     drop(this.x, this.y, 10, 1, 1, 1, 1, 1, 2, 2, 1);
                     booms.push(new Boom(this.x, this.y));
                     p1.score += 50;

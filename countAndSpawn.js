@@ -25,7 +25,7 @@ function CountRegister() {
         "Defeat as many foes as you can to get the highest score you can.",
         "This will be your last chance to stock up on supplies from the shop.",
         "After this there is no turning back. We are eternally grateful for",
-        "your noble sacrifice. Godspeed -- the human race"
+        "your noble sacrifice. -- the human race"
     ];
     this.messageSlice = this.finalMessages.slice();
     this.messageTimeoutSet = false;
@@ -57,9 +57,14 @@ function CountRegister() {
             ctx.fillStyle = "#FFFFFF";
             ctx.textAlign="center";
             ctx.fillText("GAME OVER", width / 2, height / 2);
-            ctx.fillText("TOTAL SCORE: " + (p1.score + p1.totalSpent), width / 2, height * 0.6);
+            let totalScore = p1.score + p1.totalSpent;
+            ctx.fillText("TOTAL SCORE: " + totalScore, width / 2, height * 0.6);
             if (!this.gameOver) {
                 setTimeout(() => {
+                    if (totalScore > personalBest) {
+                        setCookie("dcdjScore", totalScore.toString(), 365);
+                        personalBest = totalScore;
+                    }
                     if (isMobile) mouse.x = mouse.y = 0;
                     this.currentLevel = 0;
                     p1 = new Player();
@@ -258,12 +263,6 @@ function CountRegister() {
         },
         15: () => {
             if (!this.normalEnemyTimeoutSet) {
-                // let rndSpawnTime = Math.floor(Math.random() * 400) + 20;
-                // let enemyChoices = [Enemy, SkullAlien, EyeballAlien];
-                // setTimeout(() => {
-                //     enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
-                //     this.normalEnemyTimeoutSet = false;
-                // }, rndSpawnTime);
                 let rndSpawnTime = Math.floor(Math.random() * 1500) + 300;
                 let enemyChoices = [Enemy, SkullAlien, EyeballAlien, TongueAlien];
                 setTimeout(() => {
@@ -347,6 +346,9 @@ function CountRegister() {
                 this.meteoriteTimeoutSet = true;
             }
             if (enemies.length === 0) {
+                for (let i = 0; i < 50; i++) {
+                    shop.restock();
+                }
                 this.currentLevel = 20;
                 this.bossSpawned = this.bossKilled = false;
                 if (this.messageSlice.length === 0) this.messageSlice = this.finalMessages.slice();
@@ -362,15 +364,6 @@ function CountRegister() {
             this.gameComplete();
         },
         21: () => {
-            // if (!this.normalEnemyTimeoutSet) {
-            //     let rndSpawnTime = Math.floor(Math.random() * 1200) + 100;
-            //     let enemyChoices = [Enemy, GreenAlien, SkullAlien, EyeballAlien, ToothAlien, TongueAlien];
-            //     setTimeout(() => {
-            //         enemies.push(new enemyChoices[Math.floor(Math.random() * enemyChoices.length)](Math.floor(Math.random() * (width - 100)) + 50, 0));
-            //         this.normalEnemyTimeoutSet = false;
-            //     }, rndSpawnTime);
-            //     this.normalEnemyTimeoutSet = true;
-            // }
             if (!this.normalEnemyTimeoutSet) {
                 let rndSpawnTime = Math.floor(Math.random() * this.bonusLevelSpawnFrequency) + 200;
                 let enemyChoices = [Enemy, GreenAlien, SkullAlien, EyeballAlien, ToothAlien, TongueAlien];
