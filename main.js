@@ -57,7 +57,7 @@ function init() {
     ctx.canvas.width = width;
     ctx.canvas.height = height;
     ctx.imageSmoothingEnabled = false;
-    ctx.font = "20px manaspace";
+    ctx.font = font(20);
     for (let i = 0; i < 20; i++) {
         stars[i] = new Star(Math.random() * width, Math.random() * height, Math.random() * 5 + 1);
     }
@@ -109,7 +109,7 @@ function menu() {
     ctx.fillStyle = djBlock.selected ? "#58ff3e" : "#818084";
     ctx.fillRect(djBlock.x - djBlock.w / 2, djBlock.y  - djBlock.h / 2, djBlock.w, djBlock.h);
     ctx.fillStyle = "#ffe827";
-    ctx.font = "30px manaspace";
+    ctx.font = font(30);
     ctx.textAlign = "center";
     ctx.fillText("CHOOSE YOUR DAVID", width * 0.5, height * 0.2);
     ctx.fillStyle = dcBlock.selected ? "#FFFFFF" : "#b29739";
@@ -143,7 +143,7 @@ function display() {
     ctx.fillRect(0, height * 0.915, width, height * 0.085);
     ctx.globalAlpha = 1;
     ctx.fillStyle = "#000000";
-    ctx.font = "18px manaspace";
+    ctx.font = font(18);
     ctx.textAlign="left";
     ctx.fillText("Davcoin: " + p1.score, 30, height * 0.95);
     ctx.fillText("HP", 30, height * 0.98);

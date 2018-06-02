@@ -410,7 +410,7 @@ function Shop() {
         } else {
             ctx.fillStyle = "#FFFFFF";
         }
-        ctx.font = "50px manaspace";
+        ctx.font = font(50);
         ctx.fillText("Leave", width / 2, leaveWordHeight);
 
     };
@@ -423,7 +423,7 @@ function Shop() {
     };
     this.shopStock = () => {
         if (shop.stock.length === 0) {
-            ctx.font = "20px manaspace";
+            ctx.font = font(20);
             ctx.fillText("There is nothing left in stock", width / 2, height * 0.5);
         } else {
             let cell = width * 0.2;
@@ -449,7 +449,7 @@ function Shop() {
             ctx.fillRect(0, 0, width, height);
             ctx.textAlign = "center";
             ctx.fillStyle = "#FFFFFF";
-            ctx.font = "50px manaspace";
+            ctx.font = font(50);
             ctx.fillText("SHOP", width / 2, height * 0.2);
             this.shopStock();
             this.leaveButton();
@@ -459,10 +459,10 @@ function Shop() {
                 ctx.fillStyle = "#000";
                 ctx.fillRect(width * 0.05, height * 0.45, width * 0.9, height * 0.1);
                 ctx.fillStyle = "#FFF";
-                ctx.font = "30px manaspace";
+                ctx.font = font(30);
                 ctx.fillText("Insufficient Funds", width / 2, height / 2);
                 ctx.fillStyle = "#FFFF00";
-                ctx.font = "15px manaspace";
+                ctx.font = font(15);
             }
         }
     };
@@ -482,6 +482,9 @@ function Shop() {
                     this.y += this.yVel;
                 } else {
                     this.stage = 2;
+                    if (isMobile) {
+                        mouse.x = mouse.y = 0;
+                    }
                 }
                 break;
             case 3:

@@ -13,7 +13,7 @@ function ShopItem(name) {
         ctx.fillStyle = "#005cb7";
         ctx.fillRect(x, y, sq, sq);
         ctx.drawImage(this.itemVar[this.name][0], x + 2, y, sq, sq);
-        ctx.font = "15px manaspace";
+        ctx.font = font(15);
         ctx.fillStyle = "#FFF";
         ctx.globalAlpha = 0.5;
         ctx.fillStyle = "#000";
