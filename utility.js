@@ -23,7 +23,7 @@ function cursor(type) {
 
 function font(size) {
     let fraction = size / 411;
-    return (width * fraction).toString() + "px manaspace";
+    return Math.floor(width * fraction).toString() + "px manaspace";
 }
 
 function Sound(src) {
