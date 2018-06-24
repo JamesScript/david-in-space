@@ -54,7 +54,6 @@ var hammertime = new Hammer(c);
 var isMobile = checkIfMobile();
 var paused = false;
 var personalBest = 0;
-var testCoords = [0, 0];
 
 function init() {
     checkCookie("dcdjScore");
@@ -90,9 +89,6 @@ function render() {
     } else {
         count.currentLevel === 0 ? menu() : gameScript();
     }
-    ctx.fillText("CURRENTLY BEING EDITED", width / 5, height * 0.1);
-    ctx.fillText(testCoords, width / 2, height * 0.9);
-    console.log(testCoords);
     requestAnimationFrame(render);
 }
 
