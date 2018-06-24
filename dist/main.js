@@ -1,24 +1,28 @@
-const get = id => document.getElementById(id);
-const c = get("gameCanvas");
-const gc = $('#gameCanvas');
-const body = $('body');
-let p1 = new Player();
-let count = new CountRegister();
-let shop = new Shop();
-let enemies = [];
-let bullets = [];
-let booms = [];
-let stars = [];
-let items = [];
-let mouse = {
+'use strict';
+
+var get = function get(id) {
+    return document.getElementById(id);
+};
+var c = get("gameCanvas");
+var gc = $('#gameCanvas');
+var body = $('body');
+var p1 = new Player();
+var count = new CountRegister();
+var shop = new Shop();
+var enemies = [];
+var bullets = [];
+var booms = [];
+var stars = [];
+var items = [];
+var mouse = {
     x: 0,
     y: 0,
     w: 1,
     h: 1,
     down: false
 };
-let ctx;
-let img = {
+var ctx = void 0;
+var img = {
     dc: get("cross"),
     dj: get("jackson"),
     pistol: get("pistol"),
@@ -45,12 +49,12 @@ let img = {
     barrier: get("barrier"),
     shop: get("shop")
 };
-let aud = new Sound("audioSpriteTest.mp3");
-let hammertime = new Hammer(c);
-let isMobile = checkIfMobile();
-let paused = false;
-let personalBest = 0;
-let testCoords = [0, 0];
+var aud = new Sound("audioSpriteTest.mp3");
+var hammertime = new Hammer(c);
+var isMobile = checkIfMobile();
+var paused = false;
+var personalBest = 0;
+var testCoords = [0, 0];
 
 function init() {
     checkCookie("dcdjScore");
@@ -61,7 +65,7 @@ function init() {
     ctx.canvas.height = height;
     ctx.imageSmoothingEnabled = false;
     ctx.font = font(20);
-    for (let i = 0; i < 20; i++) {
+    for (var i = 0; i < 20; i++) {
         stars[i] = new Star(Math.random() * width, Math.random() * height, Math.random() * 5 + 1);
     }
     // enemies[0] = new Enemy(width / 2, 0);
@@ -78,7 +82,7 @@ function init() {
 function render() {
     cursor("default"); // gets overriden, placed to avoid carry-over glitches
     ctx.fillStyle = "#000000";
-    ctx.fillRect(0,0,width,height);
+    ctx.fillRect(0, 0, width, height);
     if (paused) {
         ctx.textAlign = "center";
         ctx.fillStyle = "#FFF";
@@ -93,14 +97,14 @@ function render() {
 }
 
 function menu() {
-    let dcBlock = {
+    var dcBlock = {
         x: width * 0.5,
         y: height * 0.45,
         w: width * 0.4,
         h: height * 0.238,
         selected: false
     };
-    let djBlock = {
+    var djBlock = {
         x: width * 0.5,
         y: height * 0.75,
         w: width * 0.4,
@@ -113,7 +117,7 @@ function menu() {
     ctx.fillStyle = dcBlock.selected ? "#58ff3e" : "#818084";
     ctx.fillRect(dcBlock.x - dcBlock.w / 2, dcBlock.y - dcBlock.h / 2, dcBlock.w, dcBlock.h);
     ctx.fillStyle = djBlock.selected ? "#58ff3e" : "#818084";
-    ctx.fillRect(djBlock.x - djBlock.w / 2, djBlock.y  - djBlock.h / 2, djBlock.w, djBlock.h);
+    ctx.fillRect(djBlock.x - djBlock.w / 2, djBlock.y - djBlock.h / 2, djBlock.w, djBlock.h);
     ctx.fillStyle = "#ffe827";
     ctx.font = font(30);
     ctx.textAlign = "center";
@@ -134,9 +138,9 @@ function menu() {
 }
 
 function gameScript() {
-    let objects = [stars, bullets, booms, items, enemies, [shop, p1]];
-    for (let i = 0; i < objects.length; i++) {
-        for (let j = objects[i].length - 1; j >= 0; j--) {
+    var objects = [stars, bullets, booms, items, enemies, [shop, p1]];
+    for (var i = 0; i < objects.length; i++) {
+        for (var j = objects[i].length - 1; j >= 0; j--) {
             objects[i][j].show();
             objects[i][j].update();
             if ("expended" in objects[i][j] && objects[i][j].expended) {
@@ -155,33 +159,33 @@ function display() {
     ctx.globalAlpha = 1;
     ctx.fillStyle = "#000000";
     ctx.font = font(18);
-    ctx.textAlign="left";
+    ctx.textAlign = "left";
     ctx.fillText("Davcoin: " + p1.score, 30, height * 0.95);
     ctx.fillText("HP", 30, height * 0.98);
     ctx.fillStyle = "#000000";
-    let lifebarWidth = width / 3;
+    var lifebarWidth = width / 3;
     ctx.fillRect(60, height * 0.96, lifebarWidth, height * 0.02);
     if (p1.hp > 0) {
         ctx.fillStyle = "#FF0000";
-        ctx.fillRect(60, height * 0.96, (p1.hp / p1.maxHp) * lifebarWidth, height * 0.02);
+        ctx.fillRect(60, height * 0.96, p1.hp / p1.maxHp * lifebarWidth, height * 0.02);
     }
     arsenal();
 }
 
 function arsenal() {
-    let pistolCoords = {
+    var pistolCoords = {
         x: width * 0.59,
         y: height * 0.96,
         w: width * 0.12,
         h: height * 0.065
     };
-    let uziCoords = {
+    var uziCoords = {
         x: width * 0.72,
         y: height * 0.96,
         w: width * 0.12,
         h: height * 0.065
     };
-    let rocketCoords = {
+    var rocketCoords = {
         x: width * 0.88,
         y: height * 0.96,
         w: width * 0.17,
@@ -223,27 +227,33 @@ function bulletHit(bullet) {
 }
 
 function bigBoom(x, y, magnitude, time) {
-    for (let j = 0; j < magnitude; j++) {
-        let rndX = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
-        let rndY = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
-        setTimeout(() => {
+    var _loop = function _loop(j) {
+        var rndX = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
+        var rndY = Math.floor(Math.random() * (width * 0.5)) - width * 0.25;
+        setTimeout(function () {
             booms.push(new Boom(x + rndX, y + rndY));
         }, Math.floor(Math.random() * time));
+    };
+
+    for (var j = 0; j < magnitude; j++) {
+        _loop(j);
     }
 }
 
 function drop(x, y, nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier) {
-    let rollDice = enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier);
+    var rollDice = enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier);
     if (rollDice !== "nothing") items.push(new Item(rollDice, x, y));
 }
 
 function enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket, barrier) {
-    let choices = ["nothing", "bowler", "sax", "violin", "firstAid", "beer", "uziAmmo", "rocketAmmo", "barrier"];
-    let args = Array.prototype.slice.call(arguments);
-    let totalProportions = args.reduce((a, b) => a + b);
-    let rnd = Math.floor(Math.random() * totalProportions);
-    let totalNumber = 0;
-    for (let i = 0; i < args.length; i++) {
+    var choices = ["nothing", "bowler", "sax", "violin", "firstAid", "beer", "uziAmmo", "rocketAmmo", "barrier"];
+    var args = Array.prototype.slice.call(arguments);
+    var totalProportions = args.reduce(function (a, b) {
+        return a + b;
+    });
+    var rnd = Math.floor(Math.random() * totalProportions);
+    var totalNumber = 0;
+    for (var i = 0; i < args.length; i++) {
         if (rnd < args[i] + totalNumber) {
             return choices[i];
         } else {
@@ -252,7 +262,7 @@ function enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket
     }
 }
 
-let pressOptions = {
+var pressOptions = {
     event: 'press',
     // pointer: 1,
     threshold: 1,
@@ -261,41 +271,41 @@ let pressOptions = {
 
 hammertime.get('press').set(pressOptions);
 
-hammertime.on('pan', function(ev) {
+hammertime.on('pan', function (ev) {
     mouse.x = ev.srcEvent.pageX - gc.offset().left;
     mouse.y = ev.srcEvent.pageY - gc.offset().top;
     if (p1.x < 0) p1.x = 0;
     if (p1.x > width) p1.x = width;
 });
 
-document.body.addEventListener("click", () => {
+document.body.addEventListener("click", function () {
     p1.shoot();
 }, false);
 
-document.body.addEventListener("mousemove", (e) => {
+document.body.addEventListener("mousemove", function (e) {
     handleMouse(e);
 }, false);
 
-document.body.addEventListener("mousedown", () => {
+document.body.addEventListener("mousedown", function () {
     mouse.down = true;
 }, false);
 
-document.body.addEventListener("mouseup", () => {
+document.body.addEventListener("mouseup", function () {
     mouse.down = false;
 }, false);
 
-document.body.addEventListener("touchstart", (e) => {
+document.body.addEventListener("touchstart", function (e) {
     mouse.x = e.touches[0].pageX;
     mouse.y = e.touches[0].pageY;
     mouse.down = true;
 }, false);
 
-document.body.addEventListener("touchend", () => {
+document.body.addEventListener("touchend", function () {
     mouse.down = false;
 }, false);
 
 if (!isMobile) {
-    document.addEventListener('keypress', (event) => {
+    document.addEventListener('keypress', function (event) {
         if (event.keyCode === 112) {
             paused = !paused;
         }
@@ -304,3 +314,4 @@ if (!isMobile) {
 
 init();
 render();
+//# sourceMappingURL=main.js.map
