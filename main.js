@@ -50,6 +50,7 @@ let hammertime = new Hammer(c);
 let isMobile = checkIfMobile();
 let paused = false;
 let personalBest = 0;
+let testCoords;
 
 function init() {
     checkCookie("dcdjScore");
@@ -85,6 +86,8 @@ function render() {
     } else {
         count.currentLevel === 0 ? menu() : gameScript();
     }
+    ctx.fillText("CURRENTLY BEING EDITED", width / 5, height * 0.1);
+    ctx.fillText(testCoords, width / 2, height * 0.9);
     requestAnimationFrame(render);
 }
 
@@ -280,7 +283,8 @@ document.body.addEventListener("mouseup", () => {
     mouse.down = false;
 }, false);
 
-document.body.addEventListener("touchstart", () => {
+document.body.addEventListener("touchstart", (e) => {
+    testCoords = e;
     mouse.down = true;
 }, false);
 
