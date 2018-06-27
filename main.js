@@ -283,6 +283,7 @@ document.body.addEventListener("mouseup", () => {
 document.body.addEventListener("touchstart", (e) => {
     mouse.x = e.touches[0].pageX;
     mouse.y = e.touches[0].pageY;
+    p1.shoot();
     mouse.down = true;
 }, false);
 
