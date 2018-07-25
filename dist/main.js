@@ -156,14 +156,14 @@ function display() {
     ctx.fillStyle = "#000000";
     ctx.font = font(18);
     ctx.textAlign = "left";
-    ctx.fillText("Davcoin: " + p1.score, 30, height * 0.95);
-    ctx.fillText("HP", 30, height * 0.98);
+    ctx.fillText("Davcoin: " + p1.score, width * 0.077, height * 0.95);
+    ctx.fillText("HP", width * 0.077, height * 0.98);
     ctx.fillStyle = "#000000";
     var lifebarWidth = width / 3;
-    ctx.fillRect(60, height * 0.96, lifebarWidth, height * 0.02);
+    ctx.fillRect(width * 0.154, height * 0.96, lifebarWidth, height * 0.02);
     if (p1.hp > 0) {
         ctx.fillStyle = "#FF0000";
-        ctx.fillRect(60, height * 0.96, p1.hp / p1.maxHp * lifebarWidth, height * 0.02);
+        ctx.fillRect(width * 0.154, height * 0.96, p1.hp / p1.maxHp * lifebarWidth, height * 0.02);
     }
     arsenal();
 }

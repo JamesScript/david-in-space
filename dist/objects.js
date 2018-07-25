@@ -427,9 +427,10 @@ function Shop() {
             ctx.fillText("There is nothing left in stock", width / 2, height * 0.5);
         } else {
             var cell = width * 0.2;
+            var cellH = height * 0.14;
             for (var i = 0; i < _this8.stock.length - _this8.stockPage * 9 && i < 9; i++) {
                 var currentItem = _this8.stock[_this8.stockPage * 9 + i];
-                currentItem.display(i % 3 * cell + cell, Math.floor(i / 3) * cell + cell * 2);
+                currentItem.display(i % 3 * cell + cell, Math.floor(i / 3) * cellH + cellH);
                 if (currentItem.expended) {
                     _this8.stock.splice(i + _this8.stockPage * 9, 1);
                 }
@@ -450,7 +451,7 @@ function Shop() {
             ctx.textAlign = "center";
             ctx.fillStyle = "#FFFFFF";
             ctx.font = font(50);
-            ctx.fillText("SHOP", width / 2, height * 0.2);
+            ctx.fillText("SHOP", width / 2, height * 0.1);
             _this8.shopStock();
             _this8.leaveButton();
             _this8.rightButton();

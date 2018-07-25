@@ -1,4 +1,7 @@
-let width = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerWidth * 0.378 > 411 ? window.innerWidth * 0.378 : 411;
+// let width = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerWidth * 0.378 > 411 ? window.innerWidth * 0.378 : 411;
+// let height = window.innerHeight;
+
+let width = window.innerHeight * 0.562 > window.innerWidth ? window.innerWidth : window.innerHeight * 0.562;
 let height = window.innerHeight;
 
 function collision(a, b) {

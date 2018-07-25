@@ -23,10 +23,13 @@ function ShopItem(name) {
         }]
     };
     this.display = function (x, y) {
-        var sq = width * 0.18;
+        var sq = {
+            w: width * 0.18,
+            h: height * 0.13
+        };
         ctx.fillStyle = "#005cb7";
-        ctx.fillRect(x, y, sq, sq);
-        ctx.drawImage(_this.itemVar[_this.name][0], x + 2, y, sq, sq);
+        ctx.fillRect(x, y, sq.w, sq.h);
+        ctx.drawImage(_this.itemVar[_this.name][0], x + 2, y, sq.w, sq.h);
         ctx.font = font(15);
         ctx.fillStyle = "#FFF";
         ctx.globalAlpha = 0.5;
@@ -34,10 +37,10 @@ function ShopItem(name) {
         ctx.fillRect(x + width * 0.045, y + width * 0.14, width * 0.09, width * 0.04);
         ctx.globalAlpha = 1;
         var collisionObject = {
-            x: x + sq / 2,
-            y: y + sq / 2,
-            w: sq,
-            h: sq
+            x: x + sq.w / 2,
+            y: y + sq.h / 2,
+            w: sq.w,
+            h: sq.h
         };
         if (collision(collisionObject, mouse)) {
             ctx.fillStyle = "#FFFF00";
