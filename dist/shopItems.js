@@ -63,7 +63,7 @@ function ShopItem(name) {
         } else {
             ctx.fillStyle = "#FFF";
         }
-        ctx.fillText(_this.itemVar[_this.name][1], x + width * 0.09, y + width * 0.18);
+        ctx.fillText(_this.itemVar[_this.name][1], x + width * 0.09, y + height * 0.10);
     };
 }
 //# sourceMappingURL=shopItems.js.map

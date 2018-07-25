@@ -47,6 +47,6 @@ function ShopItem(name) {
         } else {
             ctx.fillStyle = "#FFF";
         }
-        ctx.fillText(this.itemVar[this.name][1], x + width * 0.09, y + width * 0.18);
+        ctx.fillText(this.itemVar[this.name][1], x + width * 0.09, y + height * 0.10);
     };
 }
