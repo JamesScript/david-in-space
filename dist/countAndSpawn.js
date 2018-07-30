@@ -3,7 +3,7 @@
 function CountRegister() {
     var _this = this;
 
-    this.currentLevel = 0; // 0 is menu
+    this.currentLevel = 2; // 0 is menu
     this.sinceLastMeteorite = 0;
     this.nextMeteorite = Math.floor(Math.random() * 300) + 50;
     this.enemyWait = 0;
