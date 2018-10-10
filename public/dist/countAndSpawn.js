@@ -24,6 +24,36 @@ function CountRegister() {
     this.messageSlice = this.finalMessages.slice();
     this.messageTimeoutSet = false;
     this.bonusLevelSpawnFrequency = 1500;
+    // this.apiScores = [];
+    this.hiscorePage = {
+        scoreList: [],
+        titleHeight: height * 0.6,
+        posted: false,
+        alias: "",
+        currentlyUpdating: false,
+        reqSent: false,
+        resRecieved: false
+    };
+    this.postHiscore = function() {
+        _this.hiscorePage.currentlyUpdating = true;
+        var totalScore = p1.score + p1.totalSpent;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            let response = JSON.parse(this.responseText);
+            _this.hiscorePage.scoreList = response.scores;
+            _this.currentLevel = 101;
+            _this.hiscorePage.posted = false;
+            _this.hiscorePage.currentlyUpdating = false;
+            inputBox.style.display = "none";
+            // console.log(_this.hiscorePage.scoreList);
+          }
+        };
+        xhttp.open("POST", "/api/postscore", true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        var message = "score=" + totalScore + "&name=" + _this.hiscorePage.alias + "&david=" + (p1.isCross ? "cross" : "jackson");
+        xhttp.send(message);
+    };
     this.createLevelLengthsArray = function () {
         for (var i = 0; i < _this.levelLengthsInReality.length; i++) {
             _this.levelLengths.push(1);
@@ -44,6 +74,7 @@ function CountRegister() {
     };
     this.level = {
         99: function _() {
+          //GAME OVER
             if (_this.toothAlienIntervalSet) {
                 clearInterval(_this.toothAlienInterval);
                 _this.toothAlienIntervalSet = false;
@@ -53,6 +84,9 @@ function CountRegister() {
             ctx.fillText("GAME OVER", width / 2, height / 2);
             var totalScore = p1.score + p1.totalSpent;
             ctx.fillText("TOTAL SCORE: " + totalScore, width / 2, height * 0.6);
+            if (!_this.hiscorePage.reqSent) {
+                
+            }
             if (!_this.gameOver) {
                 setTimeout(function () {
                     if (totalScore > personalBest) {
@@ -60,13 +94,72 @@ function CountRegister() {
                         personalBest = totalScore;
                     }
                     if (isMobile) mouse.x = mouse.y = 0;
-                    _this.currentLevel = 0;
-                    p1 = new Player();
+                    if (totalScore >= Number(count.hiscorePage.scoreList[9].score)) {
+                      _this.currentLevel = 100;
+                    } else {
+                      _this.currentLevel = 101;
+                    }
                     enemies = [];
                     _this.gameOver = false;
                 }, 3000);
                 _this.gameOver = true;
             }
+        },
+      // POST SCORE
+        100: function _() {
+          ctx.fillStyle="#000000";
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.textAlign = "center";
+          ctx.font = font(18);
+          var totalScore = p1.score + p1.totalSpent;
+          ctx.fillText("TOTAL SCORE: " + totalScore, width / 2, _this.hiscorePage.titleHeight);
+          
+          // The hiscore body
+          if (_this.hiscorePage.titleHeight > height * 0.1) {
+            _this.hiscorePage.titleHeight -= height * 0.01;
+          } else {
+            // This if-else just waits for the text to glide to the top of the screen before moving on
+            if (isMobile || true) {
+              inputBox.style.display = "block";
+            } else {
+              ctx.fillText(_this.hiscorePage.alias + "_", width / 2, height * 0.3);
+            }
+            ctx.fillText("Please spell your alias", width / 2, height * 0.2);
+            ctx.fillText("to upload your hiscore", width / 2, height * 0.25);
+            var submitBtn = {
+              x: width / 2, 
+              y: height * 0.75,
+              w: width * 0.4,
+              h: height * 0.1
+            }
+            ctx.fillStyle="#555555";
+            ctx.fillRect(submitBtn.x - submitBtn.w / 2, submitBtn.y - submitBtn.h / 2, submitBtn.w, submitBtn.h);
+            ctx.fillStyle="#FFFFFF";
+            ctx.fillText("SUBMIT", width / 2, height * 0.75);
+            if (collision(submitBtn, mouse)) {
+              cursor("pointer");
+              if (mouse.down && !_this.hiscorePage.posted) {
+                _this.postHiscore();
+                _this.hiscorePage.posted = true;
+              }
+            }
+          }
+        },
+      // SCORE LIST
+        101: function _() {
+          ctx.fillStyle="#000000";
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.textAlign = "center";
+          ctx.font = font(18);
+          ctx.fillText("HISCORES", width * 0.5, height * 0.15);
+          for (let i = 0; i < _this.hiscorePage.scoreList.length; i++) {
+            var rowH = height * 0.05 * (i+1) + height * 0.2;
+            ctx.fillText(_this.hiscorePage.scoreList[i].name, width * 0.3, rowH);
+            ctx.fillText(_this.hiscorePage.scoreList[i].score, width * 0.7, rowH);
+            ctx.drawImage(_this.hiscorePage.scoreList[i].david === "cross" ? img.dc : img.dj, width * 0.47, rowH - height * 0.03, width * 0.06, height * 0.04);
+          }
         },
         1: function _() {
             if (Math.random() > 0.99) {
