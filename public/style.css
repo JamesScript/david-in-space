@@ -24,7 +24,16 @@ canvas {
     cursor: pointer;
 }
 
+#nameInput {
+    display: none;
+    position: absolute;
+    width: 50vw;
+    top: 40%;
+    left: 25vw;
+    font-size: 24px;
+}
+
 @font-face {
     font-family: "manaspace";
-    src: url("manaspace.ttf");
+    src: url("https://cdn.glitch.com/38755281-8e22-497d-a22b-0cd6ad84e708%2Fmanaspace.ttf?1539121781025");
 }

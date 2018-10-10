@@ -1,14 +1,12 @@
 'use strict';
 
-var get = function get(id) {
-    return document.getElementById(id);
-};
 var c = get("gameCanvas");
 var gc = $('#gameCanvas');
 var body = $('body');
 var p1 = new Player();
 var count = new CountRegister();
 var shop = new Shop();
+var hsBtn = new HiscoreButton();
 var enemies = [];
 var bullets = [];
 var booms = [];
@@ -56,6 +54,8 @@ var paused = false;
 var personalBest = 0;
 
 function init() {
+    inputBox.style.width = width / 2 + "px";
+    inputBox.style.left = window.innerWidth / 2 - width / 4 + "px";
     checkCookie("dcdjScore");
     count.createLevelLengthsArray();
     shop.x = width / 2;
@@ -76,6 +76,15 @@ function init() {
     if (isMobile && window.innerWidth > window.innerHeight) {
         alert("If you are using mobile please switch to portrait view and reload this page.");
     }
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var response = JSON.parse(this.responseText);  
+          count.hiscorePage.scoreList = response[0].scores;
+        }
+    };
+    xhttp.open("GET", "https://david-in-space.glitch.me/api/scores", true);
+    xhttp.send();
 }
 
 function render() {
@@ -89,6 +98,7 @@ function render() {
     } else {
         count.currentLevel === 0 ? menu() : gameScript();
     }
+    if (count.currentLevel === 0 || count.currentLevel === 101) hsBtn.show();
     requestAnimationFrame(render);
 }
 
@@ -145,7 +155,7 @@ function gameScript() {
         }
     }
     count.go();
-    display();
+    if (count.currentLevel < 99) display();
 }
 
 function display() {
@@ -258,6 +268,38 @@ function enemyDrop(nothing, bowler, sax, violin, firstAid, beer, uziAmmo, rocket
     }
 }
 
+function HiscoreButton() {
+  this.x = width * 0.5;
+  this.y = height * 0.95;
+  this.w = width * 0.5;
+  this.h = height * 0.08;
+  this.spamStop = false;
+  this.message = ["HISCORES", "MENU"];
+  this.show = function() {
+    ctx.font = font(20);
+    ctx.fillStyle = "#AAAAAA";
+    ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    ctx.fillStyle = "#000000";
+    ctx.fillText(this.message[Number(count.currentLevel === 101)], this.x, this.y + height * 0.01);
+    if (collision(this, mouse)) {
+        cursor("pointer");
+        if (mouse.down && !this.spamStop) {
+            this.spamStop = true;
+            setTimeout(function() {
+              hsBtn.spamStop = false;
+            }, 200);
+            if (count.currentLevel === 0) {
+              count.currentLevel = 101;
+            } else {
+              count.currentLevel = 0;
+              p1 = new Player();
+              count.levelFrame = 0;
+            }
+        }
+    }
+  };
+}
+
 var pressOptions = {
     event: 'press',
     // pointer: 1,
@@ -303,11 +345,26 @@ document.body.addEventListener("touchend", function () {
 
 if (!isMobile) {
     document.addEventListener('keypress', function (event) {
-        if (event.keyCode === 112) {
-            paused = !paused;
+        // if (event.keyCode === 112) {
+        //     paused = !paused;
+        // }
+        for (let i = 48; i <= 90; i++) {
+          if (event.keyCode === i || event.keyCode === i + 32) {
+            if (count.hiscorePage.alias.length < 19) userType(String.fromCharCode(i));
+          }
+        }
+    });
+  
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 8 && count.hiscorePage.alias.length > 0) {
+          count.hiscorePage.alias = count.hiscorePage.alias.substr(0, count.hiscorePage.alias.length - 1);
         }
     });
 }
+
+window.addEventListener('resize', function(event){
+    inputBox.style.left = window.innerWidth / 2 - width / 4 + "px";
+});
 
 init();
 render();

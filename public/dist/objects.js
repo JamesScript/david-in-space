@@ -82,7 +82,7 @@ function Player() {
         _this.contain();
     };
     this.shoot = function () {
-        if (shop.stage !== 2 && !paused && count.currentLevel > 0 && p1.hp > 0 && mouse.x > 0 && mouse.x < width && mouse.y > 0 && mouse.y < height * 0.9) {
+        if (shop.stage !== 2 && !paused && count.currentLevel > 0 && count.currentLevel < 99 && p1.hp > 0 && mouse.x > 0 && mouse.x < width && mouse.y > 0 && mouse.y < height * 0.9) {
             if (_this.equip === 2) {
                 if (_this.rocketAmmo > 0) {
                     aud.clone(0); // change to rocket sound
