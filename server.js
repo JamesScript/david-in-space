@@ -5,6 +5,11 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI);
 const bodyParser = require('body-parser');
 const hash = require('object-hash');
+const cors = require('cors');
+const Filter = require('bad-words');
+const filter = new Filter();
+
+console.log(filter.clean("bollocks fucking cunt bastard wank shit bellend cumdumpster bitch cocksucker asshole prick"));
 
 const ScoreSchema = new mongoose.Schema({
   jxID: String,
@@ -17,6 +22,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(cors());
 
 app.get("/api/scores", (req, res) => {
   Scores.find((err, data) => {
