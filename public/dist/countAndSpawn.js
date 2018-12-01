@@ -46,7 +46,6 @@ function CountRegister() {
             _this.hiscorePage.posted = false;
             _this.hiscorePage.currentlyUpdating = false;
             inputBox.style.display = "none";
-            // console.log(_this.hiscorePage.scoreList);
           }
         };
         xhttp.open("POST", "/api/postscore", true);
